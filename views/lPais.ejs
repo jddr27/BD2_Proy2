@@ -64,56 +64,12 @@
             </div>
         </nav>
 
-        <h3> 201503393 - José Daniel De León Ruiz </h3> 
-
-        <br> 
-        <hr> 
-        <br> 
-
-        <div id="container-1" align="center">
-            <h3> Crear registro </h3>
-            <form action="/crear" method="POST" enctype="application/json">
-                <div>
-                    <label>Fecha</label>
-                    <input type="date" id="nFecha" name="nFecha">
-                </div>
-                <div>
-                    <label>Email</label>
-                    <input type="email" id="nEmail" name="nEmail">
-                </div>
-                <div>
-                    <label>Titulo</label>
-                    <textarea id="nTitulo" name="nTitulo" rows="1" cols="50"> </textarea>
-                </div>
-                <div>
-                    <label>Descripcion</label>
-                    <textarea id="nDescri" name="nDescri" rows="5" cols="50"> </textarea>
-                </div>
-                <input type="submit" id="btnCrear" value="Crear">
-            </form>
-
-            <label><%= consola %> </label>
-
-        </div>
-
-        <br> 
-        <hr> 
-        <br>
-
         <div id="wrapper" align="center">
-            <h3> Filtros </h3>
-            <form action="/filtrar" method="POST" enctype="application/json">
+            <h3> Listar inventos por pais </h3>
+            <form action="/filtrarPais" method="POST" enctype="application/json">
                 <div>
-                    <label>Fecha Inicial</label>
-                    <input type="date" id="fIni" name="fIni">
-                </div>
-                <div>
-                    <label>Fecha Final</label>
-                    <input type="date" id="fFin" name="fFin">
-                </div>
-                <div>
-                    <label>Email</label>
-                    <input type="email" id="fEmail" name="fEmail">
+                    <label>Pais</label>
+                    <input type="text" id="pais" name="pais">
                 </div>
                 <input type="submit" id="btnFiltrar" value="Filtrar">
             </form>

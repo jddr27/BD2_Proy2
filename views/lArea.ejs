@@ -1,6 +1,6 @@
 <html lang="es">
     <head>
-            <title>Proyecto 2</title>
+            <title>Listar por area</title>
             <meta charset="utf-8">
             <meta name="viewport" content="width=device-width, initial-scale=1">
             <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -56,7 +56,6 @@
                             <ul class="dropdown-menu">
                                 <li><a onclick="lPais()">Por pais</a></li>
                                 <li><a onclick="lInve()">Por inventor</a></li>
-                                <li><a onclick="lArea()">Por area</a></li>
                             </ul>
                         </li>
                     </ul>
@@ -64,53 +63,9 @@
             </div>
         </nav>
 
-        <h3> 201503393 - José Daniel De León Ruiz </h3> 
-
-        <br> 
-        <hr> 
-        <br> 
-
-        <div id="container-1" align="center">
-            <h3> Crear registro </h3>
-            <form action="/crear" method="POST" enctype="application/json">
-                <div>
-                    <label>Fecha</label>
-                    <input type="date" id="nFecha" name="nFecha">
-                </div>
-                <div>
-                    <label>Email</label>
-                    <input type="email" id="nEmail" name="nEmail">
-                </div>
-                <div>
-                    <label>Titulo</label>
-                    <textarea id="nTitulo" name="nTitulo" rows="1" cols="50"> </textarea>
-                </div>
-                <div>
-                    <label>Descripcion</label>
-                    <textarea id="nDescri" name="nDescri" rows="5" cols="50"> </textarea>
-                </div>
-                <input type="submit" id="btnCrear" value="Crear">
-            </form>
-
-            <label><%= consola %> </label>
-
-        </div>
-
-        <br> 
-        <hr> 
-        <br>
-
         <div id="wrapper" align="center">
-            <h3> Filtros </h3>
-            <form action="/filtrar" method="POST" enctype="application/json">
-                <div>
-                    <label>Fecha Inicial</label>
-                    <input type="date" id="fIni" name="fIni">
-                </div>
-                <div>
-                    <label>Fecha Final</label>
-                    <input type="date" id="fFin" name="fFin">
-                </div>
+            <h3> Listar inventos por area de innovacion </h3>
+            <form action="/filtrarArea" method="POST" enctype="application/json">
                 <div>
                     <label>Email</label>
                     <input type="email" id="fEmail" name="fEmail">

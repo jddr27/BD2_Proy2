@@ -1,6 +1,6 @@
 <html lang="es">
     <head>
-            <title>Proyecto 2</title>
+            <title>Nuevo patente</title>
             <meta charset="utf-8">
             <meta name="viewport" content="width=device-width, initial-scale=1">
             <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -45,7 +45,6 @@
                             <a class="dropdown-toggle" data-toggle="dropdown" href="">Ingresar
                             <span class="caret"></span></a>
                             <ul class="dropdown-menu">
-                                <li><a onclick="nPate()">Patentes</a></li>
                                 <li><a onclick="nCola()">Colaboradores</a></li>
                                 <li><a onclick="nPais()">Paises</a></li>
                             </ul>
@@ -64,15 +63,9 @@
             </div>
         </nav>
 
-        <h3> 201503393 - José Daniel De León Ruiz </h3> 
-
-        <br> 
-        <hr> 
-        <br> 
-
         <div id="container-1" align="center">
-            <h3> Crear registro </h3>
-            <form action="/crear" method="POST" enctype="application/json">
+            <h3> Crear registro de patente </h3>
+            <form action="/nuevaPate" method="POST" enctype="application/json">
                 <div>
                     <label>Fecha</label>
                     <input type="date" id="nFecha" name="nFecha">
@@ -94,50 +87,6 @@
 
             <label><%= consola %> </label>
 
-        </div>
-
-        <br> 
-        <hr> 
-        <br>
-
-        <div id="wrapper" align="center">
-            <h3> Filtros </h3>
-            <form action="/filtrar" method="POST" enctype="application/json">
-                <div>
-                    <label>Fecha Inicial</label>
-                    <input type="date" id="fIni" name="fIni">
-                </div>
-                <div>
-                    <label>Fecha Final</label>
-                    <input type="date" id="fFin" name="fFin">
-                </div>
-                <div>
-                    <label>Email</label>
-                    <input type="email" id="fEmail" name="fEmail">
-                </div>
-                <input type="submit" id="btnFiltrar" value="Filtrar">
-            </form>
-
-            <% if(valores.length > 0){ %>
-                <table style="width: fit-content;">
-                    <tr>
-                    <th>ID</th>
-                    <th>Titulo</th> 
-                    <th>Descripcion</th>
-                    <th>email</th> 
-                    <th>Fecha</th> 
-                    </tr>
-                    <% for(var i=0; i< valores.length; i++){ %>
-                    <tr>
-                    <td><%= valores[i].idticket %></td>
-                    <td><%= valores[i].titulo %></td> 
-                    <td><%= valores[i].descripcion %></td> 
-                    <td><%= valores[i].email %></td> 
-                    <td><%= valores[i].fecha %></td> 
-                    </tr>
-                    <% } %>
-                </table>
-            <% } %>
         </div>
     </body>
 </html>
