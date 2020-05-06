@@ -60,7 +60,7 @@ app.get('/cargarPais',function(req, res){
         //console.log("nombre: " + element.name + ", a2c: " + element.alpha2Code  + ", a3c: " + element.alpha3Code + ", fronte: {\"" + element.borders.join('","').toString() + "\"}");
         query = "INSERT INTO pais (nombrePais, a2c, a3c, borders)" +  
                         "VALUES ('"+ element.name +"', '"+ element.alpha2Code +"', "+
-                        element.alpha3Code+ "{'" + element.borders.join("','").toString() + "'});";
+                        element.alpha3Code+ ", {'" + element.borders.join("','").toString() + "'});";
         console.log(query);
         client.execute(query,[], (err, result) => {
             if(err){
