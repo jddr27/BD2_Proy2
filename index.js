@@ -2,7 +2,7 @@
 const express = require('express');
 const fs = require('fs');
 const cassandra = require('cassandra-driver'); 
-/*const client = new cassandra.Client({contactPoints:['bd2_DC1N1_1:9042','bd2_DC1N2_1:9043','bd2_DC1N3_1:9044'], keyspace:'proyecto'});
+const client = new cassandra.Client({contactPoints:['bd2_DC1N1_1:9042','bd2_DC1N2_1:9043','bd2_DC1N3_1:9044'], keyspace:'proyecto'});
 client.connect((err, result) => {
     if(err){
         console.log(err);
@@ -11,7 +11,6 @@ client.connect((err, result) => {
     }
     
 });
- */
 
 const app = express();
 const bodyParser = require('body-parser');
@@ -55,9 +54,42 @@ app.get('/lArea',function(req, res){
 app.get('/cargarPais',function(req, res){
     let rawdata = fs.readFileSync('./data/countries.json');
     let exjson = JSON.parse(rawdata);
+    let query = "";
+    let correcto = true; 
     exjson.forEach(function(element) {
-        console.log("nombre: " + element.name + ", a2c: " + element.alpha2Code  + ", a3c: " + element.alpha3Code + ", fronte: " + element.borders);
+        console.log("nombre: " + element.name + ", a2c: " + element.alpha2Code  + ", a3c: " + element.alpha3Code + ", fronte: {\"" + element.borders.join('","').toString() + "\"}");
+        query = "INSERT INTO pais (nombrePais, a2c, a3c, borders)" +  
+                        "VALUES ('"+ element.name +"', '"+ element.alpha2Code +"', '"+
+                        element.alpha3Code+ "{'" + element.borders.join("','").toString() + "'});";
+        client.execute(query,[], (err, result) => {
+            if(err){
+                correcto = false;
+                console.log("ERROR" + err);
+                break;
+            }
+        });
+        query = "INSERT INTO pais_por_a2c (nombrePais, a2c)" +  
+                        "VALUES ('"+ element.name +"', '"+ element.alpha2Code +"');";
+        client.execute(query,[], (err, result) => {
+            if(err){
+                correcto = false;
+                console.log("ERROR" + err);
+                break;
+            }
+        });
+        query = "INSERT INTO pais_por_a3c (nombrePais, a3c)" +  
+                        "VALUES ('"+ element.name +"', '"+ element.alpha3Code +"');";
+        client.execute(query,[], (err, result) => {
+            if(err){
+                correcto = false;
+                console.log("ERROR" + err);
+                break;
+            }
+        });
     });
+    if(correcto){
+        console.log('termino');
+    }
     //console.log(student);
     res.redirect('/');
 });
