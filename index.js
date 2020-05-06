@@ -34,7 +34,7 @@ app.get('/nPais',function(req, res){
         if(err){
             salida = err;
             console.log("ERROR" + err);
-            return res.render('nPais',{consola:salida, valores:paises});
+            return res.send(err.toString());
         } else {
             paises = result.rows;
             console.log(result.rows);
@@ -42,7 +42,6 @@ app.get('/nPais',function(req, res){
             return res.render('nPais',{consola:salida, valores:paises});
         }
     });
-    return res.send("no carga");
 });
 
 app.get('/nPate',function(req, res){
