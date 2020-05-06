@@ -34,13 +34,15 @@ app.get('/nPais',function(req, res){
         if(err){
             salida = err;
             console.log("ERROR" + err);
+            return res.render('nPais',{consola:salida, valores:paises});
         } else {
             paises = result.rows;
             console.log(result.rows);
             salida = "Correcta";
+            return res.render('nPais',{consola:salida, valores:paises});
         }
     });
-    res.render('nPais',{consola:salida, valores:paises});
+    return res.send("no carga");
 });
 
 app.get('/nPate',function(req, res){
