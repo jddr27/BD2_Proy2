@@ -2,7 +2,7 @@
 const express = require('express');
 const fs = require('fs');
 const cassandra = require('cassandra-driver'); 
-/*const client = new cassandra.Client({contactPoints:['bd2_DC1N1_1:9042','bd2_DC1N2_1:9043','bd2_DC1N3_1:9044'], keyspace:'proyecto'});
+const client = new cassandra.Client({contactPoints:['bd2_DC1N1_1:9042','bd2_DC1N2_1:9043','bd2_DC1N3_1:9044'], keyspace:'proyecto'});
 client.connect((err, result) => {
     if(err){
         console.log(err);
@@ -10,7 +10,7 @@ client.connect((err, result) => {
         console.log('index: cassandra connected');
     }
     
-});*/
+});
 
 const app = express();
 const bodyParser = require('body-parser');
