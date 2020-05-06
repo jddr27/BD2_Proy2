@@ -57,17 +57,18 @@ app.get('/cargarPais',function(req, res){
     let query = "";
     let correcto = true; 
     exjson.forEach(function(element) {
-        console.log("nombre: " + element.name + ", a2c: " + element.alpha2Code  + ", a3c: " + element.alpha3Code + ", fronte: {\"" + element.borders.join('","').toString() + "\"}");
+        //console.log("nombre: " + element.name + ", a2c: " + element.alpha2Code  + ", a3c: " + element.alpha3Code + ", fronte: {\"" + element.borders.join('","').toString() + "\"}");
         query = "INSERT INTO pais (nombrePais, a2c, a3c, borders)" +  
-                        "VALUES ('"+ element.name +"', '"+ element.alpha2Code +"', '"+
+                        "VALUES ('"+ element.name +"', '"+ element.alpha2Code +"', "+
                         element.alpha3Code+ "{'" + element.borders.join("','").toString() + "'});";
+        console.log(query);
         client.execute(query,[], (err, result) => {
             if(err){
                 correcto = false;
                 console.log("ERROR" + err);
             }
         });
-        query = "INSERT INTO pais_por_a2c (nombrePais, a2c)" +  
+        /*query = "INSERT INTO pais_por_a2c (nombrePais, a2c)" +  
                         "VALUES ('"+ element.name +"', '"+ element.alpha2Code +"');";
         client.execute(query,[], (err, result) => {
             if(err){
@@ -82,7 +83,7 @@ app.get('/cargarPais',function(req, res){
                 correcto = false;
                 console.log("ERROR" + err);
             }
-        });
+        });*/
     });
     if(correcto){
         console.log('termino');
