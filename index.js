@@ -65,27 +65,33 @@ app.get('/cargarPais',function(req, res){
             if(err){
                 correcto = false;
                 console.log("ERROR" + err);
-                break;
             }
         });
+        if(!correcto){
+            break;
+        }
         query = "INSERT INTO pais_por_a2c (nombrePais, a2c)" +  
                         "VALUES ('"+ element.name +"', '"+ element.alpha2Code +"');";
         client.execute(query,[], (err, result) => {
             if(err){
                 correcto = false;
                 console.log("ERROR" + err);
-                break;
             }
         });
+        if(!correcto){
+            break;
+        }
         query = "INSERT INTO pais_por_a3c (nombrePais, a3c)" +  
                         "VALUES ('"+ element.name +"', '"+ element.alpha3Code +"');";
         client.execute(query,[], (err, result) => {
             if(err){
                 correcto = false;
                 console.log("ERROR" + err);
-                break;
             }
         });
+        if(!correcto){
+            break;
+        }
     });
     if(correcto){
         console.log('termino');
