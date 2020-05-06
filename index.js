@@ -2,7 +2,7 @@
 const express = require('express');
 const fs = require('fs');
 const cassandra = require('cassandra-driver'); 
-/*const client = new cassandra.Client({contactPoints:['bd2_DC1N1_1:9042','bd2_DC1N2_1:9043','bd2_DC1N3_1:9044'], keyspace:'proyecto'});
+const client = new cassandra.Client({contactPoints:['bd2_DC1N1_1:9042','bd2_DC1N2_1:9043','bd2_DC1N3_1:9044'], keyspace:'proyecto'});
 client.connect((err, result) => {
     if(err){
         console.log(err);
@@ -10,7 +10,7 @@ client.connect((err, result) => {
         console.log('index: cassandra connected');
     }
     
-});*/
+});
 
 const app = express();
 const bodyParser = require('body-parser');
@@ -68,7 +68,6 @@ app.get('/cargarPais',function(req, res){
     let exjson = JSON.parse(rawdata);
     let query = "";
     exjson.forEach(function(element) {
-        //console.log("nombre: " + element.name + ", a2c: " + element.alpha2Code  + ", a3c: " + element.alpha3Code + ", fronte: {\"" + element.borders.join('","').toString() + "\"}");
         query = "INSERT INTO pais (nombrePais, a2c, a3c, borders)" +  
                         "VALUES ('"+ element.name +"', '"+ element.alpha2Code +"', '"+
                         element.alpha3Code+ "', {'" + element.borders.join("','").toString() + "'});";
@@ -93,7 +92,6 @@ app.get('/cargarPais',function(req, res){
             }
         });
     });
-    //console.log(student);
     res.redirect('/');
 });
 
@@ -131,29 +129,15 @@ app.post('/nuevoPais', (req, res) => {
 app.get('/cargarCola',function(req, res){
     let rawdata = fs.readFileSync('./data/patents.json');
     let exjson = JSON.parse(rawdata);
-    //console.log(exjson);
     let query = "";
+    let anio = 2020;
     exjson.patents.forEach(function(personas) {
         personas.examiners.forEach(function(element) {
-            //console.log("colas: " + element.examiner_first_name + " " + element.examiner_last_name + " - " + element.examiner_id);
-            query = "INSERT INTO pais (nombrePais, a2c, a3c, borders)" +  
-                            "VALUES ('"+ element.name +"', '"+ element.alpha2Code +"', '"+
-                            element.alpha3Code+ "', {'" + element.borders.join("','").toString() + "'});";
+            anio = Math.floor(Math.random() * (2019 - 2010)) + 2010;
+            query = "INSERT INTO profesional (idProfesional, nombreProfesional, apellidoProfesional, fechaInicio)" +  
+                            "VALUES ('"+ element.examiner_id +"', '"+ element.examiner_first_name +"', '"+
+                            element.examiner_last_name+ "', '" + anio + "-01-01');";
             //console.log(query);
-            client.execute(query,[], (err, result) => {
-                if(err){
-                    console.log("ERROR" + err);
-                }
-            });
-            query = "INSERT INTO pais_por_a2c (nombrePais, a2c)" +  
-                            "VALUES ('"+ element.name +"', '"+ element.alpha2Code +"');";
-            client.execute(query,[], (err, result) => {
-                if(err){
-                    console.log("ERROR" + err);
-                }
-            });
-            query = "INSERT INTO pais_por_a3c (nombrePais, a3c)" +  
-                            "VALUES ('"+ element.name +"', '"+ element.alpha3Code +"');";
             client.execute(query,[], (err, result) => {
                 if(err){
                     console.log("ERROR" + err);
@@ -161,7 +145,6 @@ app.get('/cargarCola',function(req, res){
             });
         });
     });
-    //console.log(student);
     res.redirect('/');
 });
 

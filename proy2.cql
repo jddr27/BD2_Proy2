@@ -34,7 +34,8 @@ CREATE TABLE area_por_ranking(
 CREATE TABLE profesional(
     idProfesional       TEXT,
     nombreProfesional   TEXT,
-    anios               INT,
+    apellidoProfesional   TEXT,
+    fechaInicio         DATE,
     PRIMARY KEY (idProfesional)
 );
 
