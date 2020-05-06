@@ -85,7 +85,7 @@
                 <div>
                     <label>Fronteras</label>
                     <!-- multiple dropdown -->
-                    <select id="borders" name="borders" class="chosen" multiple="true" style="width:100px;">
+                    <select id="borders" name="borders" class="chosen" multiple="true" style="width:300px;">
                         <% for(var i=0; i< valores.length; i++){ %>
                             <option value="<%= valores[i].a3c %>"><%= valores[i].nombrepais %></option>
                         <% } %>
@@ -93,8 +93,6 @@
                 </div>
                 <input type="submit" id="btnCrear" value="Crear">
             </form>
-
-            <label><%= consola %> </label>
         </div>
 
         <script>

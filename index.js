@@ -38,8 +38,7 @@ app.get('/nPais',function(req, res){
         } else {
             paises = result.rows;
             console.log(result.rows);
-            salida = "Correcta";
-            return res.render('nPais',{consola:salida, valores:paises});
+            return res.render('nPais',{valores:paises});
         }
     });
 });
@@ -99,14 +98,14 @@ app.get('/cargarPais',function(req, res){
 });
 
 app.post('/nuevoPais', (req, res) => {
-    console.log('entro a crear');
-    console.log(req.body);
+    console.log('entro a crear un pais');
+    //console.log(req.body);
     let query = "";
     query = "INSERT INTO pais (nombrePais, a2c, a3c, borders)" +  
                 "VALUES ('"+ req.body.name +"', '"+ req.body.a2c +"', '"+
                 req.body.a3c+ "', {'" + req.body.borders.join("','").toString() + "'});";
     console.log(query);
-    /*client.execute(query,[], (err, result) => {
+    client.execute(query,[], (err, result) => {
         if(err){
             console.log("ERROR" + err);
         }
@@ -124,7 +123,8 @@ app.post('/nuevoPais', (req, res) => {
         if(err){
             console.log("ERROR" + err);
         }
-    });*/
+    });
+    console.log('termino de crear el pais');
     res.redirect('/nPais');
 });
 
