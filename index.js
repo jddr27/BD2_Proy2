@@ -37,7 +37,7 @@ app.get('/nPais',function(req, res){
             return res.send(err.toString());
         } else {
             paises = result.rows;
-            console.log(result.rows);
+            //console.log(result.rows);
             return res.render('nPais',{valores:paises});
         }
     });
@@ -111,14 +111,14 @@ app.post('/nuevoPais', (req, res) => {
         }
     });
     query = "INSERT INTO pais_por_a2c (nombrePais, a2c)" +  
-                    "VALUES ('"+ exjson.name +"', '"+ exjson.a2c +"');";
+                    "VALUES ('"+ req.body.name +"', '"+ req.body.a2c +"');";
     client.execute(query,[], (err, result) => {
         if(err){
             console.log("ERROR" + err);
         }
     });
     query = "INSERT INTO pais_por_a3c (nombrePais, a3c)" +  
-                    "VALUES ('"+ exjson.name +"', '"+ exjson.a3c +"');";
+                    "VALUES ('"+ req.body.name +"', '"+ req.body.a3c +"');";
     client.execute(query,[], (err, result) => {
         if(err){
             console.log("ERROR" + err);
