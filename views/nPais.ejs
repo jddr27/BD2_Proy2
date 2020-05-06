@@ -8,6 +8,10 @@
             <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
             <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
             <script src="/static/prueba_js.js"></script>
+            <!-- Chosen -->
+            <link href='/static/chosen-js/chosen.min.css' rel='stylesheet' type='text/css'>
+            <script src='/static/chosen-js/chosen.jquery.min.js' type='text/javascript'></script>
+
             <style>    
               /* Set black background color, white text and some padding */
               nav {
@@ -45,17 +49,17 @@
                             <a class="dropdown-toggle" data-toggle="dropdown" href="">Ingresar
                             <span class="caret"></span></a>
                             <ul class="dropdown-menu">
-                                <li><a onclick="nPate()">Patentes</a></li>
-                                <li><a onclick="nCola()">Colaboradores</a></li>
+                                <li><a href="/nPate">Patentes</a></li>
+                                <li><a href="/nCola">Colaboradores</a></li>
                             </ul>
                         </li>
                         <li class="dropdown">
                             <a class="dropdown-toggle" data-toggle="dropdown" href="">Listar inventos
                             <span class="caret"></span></a>
                             <ul class="dropdown-menu">
-                                <li><a onclick="lPais()">Por pais</a></li>
-                                <li><a onclick="lInve()">Por inventor</a></li>
-                                <li><a onclick="lArea()">Por area</a></li>
+                                <li><a href="/lPais">Por pais</a></li>
+                                <li><a href="/lInve">Por inventor</a></li>
+                                <li><a href="/lArea">Por area</a></li>
                             </ul>
                         </li>
                     </ul>
@@ -67,26 +71,38 @@
             <h3> Crear registro de pais </h3>
             <form action="/nuevoPais" method="POST" enctype="application/json">
                 <div>
-                    <label>Fecha</label>
-                    <input type="date" id="nFecha" name="nFecha">
+                    <label>Nombre</label>
+                    <input type="text" id="nombre" name="nombre">
                 </div>
                 <div>
-                    <label>Email</label>
-                    <input type="email" id="nEmail" name="nEmail">
+                    <label>Alpha2 code</label>
+                    <input type="text" id="a2c" name="a2c">
                 </div>
                 <div>
-                    <label>Titulo</label>
-                    <textarea id="nTitulo" name="nTitulo" rows="1" cols="50"> </textarea>
+                    <label>Alpha3 code</label>
+                    <input type="text" id="a3c" name="a3c">
                 </div>
                 <div>
-                    <label>Descripcion</label>
-                    <textarea id="nDescri" name="nDescri" rows="5" cols="50"> </textarea>
+                    <label>Borders</label>
+                    <!-- multiple dropdown -->
+                    <select id="borders" name="borders" class="chosen" multiple="true" style="width:100px;">
+                        <option value="1">Hola</option>
+                        <option value="2">jQuery</option>
+                        <option value="3">MooTools</option>
+                        <option value="4">Prototype</option>
+                        
+                    </select>
                 </div>
                 <input type="submit" id="btnCrear" value="Crear">
             </form>
 
             <label><%= consola %> </label>
-
         </div>
+
+        <script>
+            jQuery(document).ready(function(){
+                jQuery(".chosen").data("placeholder","Select Frameworks...").chosen();
+            });
+        </script>
     </body>
 </html>

@@ -1,7 +1,8 @@
 'use strict';
 const express = require('express');
+const fs = require('fs');
 const cassandra = require('cassandra-driver'); 
-const client = new cassandra.Client({contactPoints:['bd2_DC1N1_1:9042','bd2_DC1N2_1:9043','bd2_DC1N3_1:9044'], keyspace:'proyecto'});
+/*const client = new cassandra.Client({contactPoints:['bd2_DC1N1_1:9042','bd2_DC1N2_1:9043','bd2_DC1N3_1:9044'], keyspace:'proyecto'});
 client.connect((err, result) => {
     if(err){
         console.log(err);
@@ -10,7 +11,7 @@ client.connect((err, result) => {
     }
     
 });
- 
+ */
 
 const app = express();
 const bodyParser = require('body-parser');
@@ -25,6 +26,57 @@ var arreglo = [];
 
 app.get('/',function(req, res){
     res.render('main',{consola:salida, valores:arreglo});
+});
+
+app.get('/nPais',function(req, res){
+    res.render('nPais',{consola:salida, valores:arreglo});
+});
+
+app.get('/nPate',function(req, res){
+    res.render('nPate',{consola:salida, valores:arreglo});
+});
+
+app.get('/nCola',function(req, res){
+    res.render('nCola',{consola:salida, valores:arreglo});
+});
+
+app.get('/lInve',function(req, res){
+    res.render('lInve',{consola:salida, valores:arreglo});
+});
+
+app.get('/lPais',function(req, res){
+    res.render('lPais',{consola:salida, valores:arreglo});
+});
+
+app.get('/lArea',function(req, res){
+    res.render('lArea',{consola:salida, valores:arreglo});
+});
+
+app.get('/cargarPais',function(req, res){
+    let rawdata = fs.readFileSync('./data/countries.json');
+    let exjson = JSON.parse(rawdata);
+    exjson.forEach(function(element) {
+        console.log("nombre: " + element.name + ", a2c: " + element.alpha2Code  + ", a3c: " + element.alpha3Code + ", fronte: " + element.borders);
+    });
+    //console.log(student);
+    res.redirect('/');
+});
+
+app.post('/nuevoPais', (req, res) => {
+    console.log('entro a crear');
+    console.log(req.body);
+
+    /*const query = "INSERT INTO tickets (idTicket, titulo, descripcion, email, fecha) VALUES ('"+idfinal+"', '"+req.body.nTitulo+"', '"+req.body.nDescri+"', '"+req.body.nEmail+"', '"+req.body.nFecha+"')";
+    client.execute(query,[], (err, result) => {
+		if(err){
+            salida = err;
+            console.log("ERROR" + err);
+		} else {
+            salida = "Creacion correcta";
+            console.log(result);
+		}
+    });*/
+    res.redirect('/');
 });
 
 app.post('/filtrar', (req, res) => {

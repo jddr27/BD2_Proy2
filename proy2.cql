@@ -119,3 +119,23 @@ CREATE TABLE inventos_por_profesional(
     nombreProfesional   TEXT,
     PRIMARY KEY (nombreProfesional, idInvento)
 ) WITH CLUSTERING ORDER BY (idInvento ASC);
+
+CREATE TABLE pais_por_a2c (
+    a2c             TEXT,
+    nombrePais      TEXT,
+    PRIMARY KEY (nombrePais, a2c)
+) WITH CLUSTERING ORDER BY (a2c ASC);
+
+CREATE TABLE pais_por_a3c (
+    a3c             TEXT,
+    nombrePais      TEXT,
+    PRIMARY KEY (nombrePais, a3c)
+) WITH CLUSTERING ORDER BY (a3c ASC);
+
+CREATE TABLE pais(
+    nombrePais      TEXT,
+    a2c             TEXT,
+    a3c             TEXT,
+    borders         SET<TEXT>,
+    PRIMARY KEY (nombrePais)
+);
