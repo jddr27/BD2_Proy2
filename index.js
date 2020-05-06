@@ -2,7 +2,7 @@
 const express = require('express');
 const fs = require('fs');
 const cassandra = require('cassandra-driver'); 
-const client = new cassandra.Client({contactPoints:['bd2_DC1N1_1:9042','bd2_DC1N2_1:9043','bd2_DC1N3_1:9044'], keyspace:'proyecto'});
+/*const client = new cassandra.Client({contactPoints:['bd2_DC1N1_1:9042','bd2_DC1N2_1:9043','bd2_DC1N3_1:9044'], keyspace:'proyecto'});
 client.connect((err, result) => {
     if(err){
         console.log(err);
@@ -10,7 +10,7 @@ client.connect((err, result) => {
         console.log('index: cassandra connected');
     }
     
-});
+});*/
 
 const app = express();
 const bodyParser = require('body-parser');
@@ -128,88 +128,73 @@ app.post('/nuevoPais', (req, res) => {
     res.redirect('/nPais');
 });
 
-app.post('/filtrar', (req, res) => {
-    console.log('entro a filtrar');
-    console.log(req.body)
-    salida = "";
-    if(req.body.fEmail == "" && req.body.fIni != "" && req.body.fFin != "" ){
-        console.log("correo vacio");
-        var query = "SELECT * FROM tickets WHERE fecha > '" + req.body.fIni + "' AND fecha < '" + req.body.fFin + "' ALLOW FILTERING;";
-        console.log(query);
-        client.execute(query,[], (err, result) => {
-            if(err){
-                salida = err;
-                console.log("ERROR" + err);
-            } else {
-                arreglo = result.rows;
-                console.log(result.rows);
-                salida = "Correcta";
-            }
+app.get('/cargarCola',function(req, res){
+    let rawdata = fs.readFileSync('./data/patents.json');
+    let exjson = JSON.parse(rawdata);
+    //console.log(exjson);
+    let query = "";
+    exjson.patents.forEach(function(personas) {
+        personas.examiners.forEach(function(element) {
+            //console.log("colas: " + element.examiner_first_name + " " + element.examiner_last_name + " - " + element.examiner_id);
+            query = "INSERT INTO pais (nombrePais, a2c, a3c, borders)" +  
+                            "VALUES ('"+ element.name +"', '"+ element.alpha2Code +"', '"+
+                            element.alpha3Code+ "', {'" + element.borders.join("','").toString() + "'});";
+            //console.log(query);
+            client.execute(query,[], (err, result) => {
+                if(err){
+                    console.log("ERROR" + err);
+                }
+            });
+            query = "INSERT INTO pais_por_a2c (nombrePais, a2c)" +  
+                            "VALUES ('"+ element.name +"', '"+ element.alpha2Code +"');";
+            client.execute(query,[], (err, result) => {
+                if(err){
+                    console.log("ERROR" + err);
+                }
+            });
+            query = "INSERT INTO pais_por_a3c (nombrePais, a3c)" +  
+                            "VALUES ('"+ element.name +"', '"+ element.alpha3Code +"');";
+            client.execute(query,[], (err, result) => {
+                if(err){
+                    console.log("ERROR" + err);
+                }
+            });
         });
-    }
-    else if(req.body.fEmail != "" && req.body.fIni != "" && req.body.fFin != "" ){
-        console.log("nada vacio");
-        var query = "SELECT * FROM tickets WHERE fecha > '" + req.body.fIni + "' AND fecha < '" + req.body.fFin + "' AND email = '" + req.body.fEmail + "' ALLOW FILTERING;";
-        console.log(query);
-        client.execute(query,[], (err, result) => {
-            if(err){
-                salida = err;
-                console.log("ERROR" + err);
-            } else {
-                arreglo = result.rows;
-                console.log(result.rows);
-                salida = "Correcta";
-            }
-        });
-    }
-    else if(req.body.fEmail != "" && req.body.fIni == "" && req.body.fFin != "" ){
-        console.log("inicio vacio");
-        var query = "SELECT * FROM tickets WHERE fecha < '" + req.body.fFin + "' AND email = '" + req.body.fEmail + "' ALLOW FILTERING;";
-        console.log(query);
-        client.execute(query,[], (err, result) => {
-            if(err){
-                salida = err;
-                console.log("ERROR" + err);
-            } else {
-                arreglo = result.rows;
-                console.log(result.rows);
-                salida = "Correcta";
-            }
-        });
-    }
-    else if(req.body.fEmail != "" && req.body.fIni == "" && req.body.fFin != "" ){
-        console.log("fin vacio");
-        var query = "SELECT * FROM tickets WHERE fecha > '" + req.body.fIni + "' AND email = '" + req.body.fEmail + "' ALLOW FILTERING;";
-        console.log(query);
-        client.execute(query,[], (err, result) => {
-            if(err){
-                salida = err;
-                console.log("ERROR" + err);
-            } else {
-                arreglo = result.rows;
-                console.log(result.rows);
-                salida = "Correcta";
-            }
-        });
-    }
-    else{
-        console.log("todo");
-        var query = "SELECT * FROM tickets;";
-        console.log(query);
-        client.execute(query,[], (err, result) => {
-            if(err){
-                salida = err;
-                console.log("ERROR" + err);
-            } else {
-                arreglo = result.rows;
-                console.log(result.rows);
-                salida = "Correcta";
-            }
-        });
-    }
+    });
+    //console.log(student);
     res.redirect('/');
 });
-  
+
+app.post('/nuevoCola', (req, res) => {
+    console.log('entro a crear un pais');
+    //console.log(req.body);
+    let query = "";
+    query = "INSERT INTO pais (nombrePais, a2c, a3c, borders)" +  
+                "VALUES ('"+ req.body.name +"', '"+ req.body.a2c +"', '"+
+                req.body.a3c+ "', {'" + req.body.borders.join("','").toString() + "'});";
+    console.log(query);
+    client.execute(query,[], (err, result) => {
+        if(err){
+            console.log("ERROR" + err);
+        }
+    });
+    query = "INSERT INTO pais_por_a2c (nombrePais, a2c)" +  
+                    "VALUES ('"+ req.body.name +"', '"+ req.body.a2c +"');";
+    client.execute(query,[], (err, result) => {
+        if(err){
+            console.log("ERROR" + err);
+        }
+    });
+    query = "INSERT INTO pais_por_a3c (nombrePais, a3c)" +  
+                    "VALUES ('"+ req.body.name +"', '"+ req.body.a3c +"');";
+    client.execute(query,[], (err, result) => {
+        if(err){
+            console.log("ERROR" + err);
+        }
+    });
+    console.log('termino de crear el pais');
+    res.redirect('/nPais');
+});
 
 app.listen(3001, function () {
     console.log('Example app listening on port 3001!');

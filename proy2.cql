@@ -21,7 +21,6 @@ CREATE TABLE area(
     nombreArea  TEXT,
     descripcion TEXT,
     ranking     INT,
-    jefeArea    UUID,
     PRIMARY KEY (idArea)
 );
 
@@ -32,39 +31,12 @@ CREATE TABLE area_por_ranking(
     PRIMARY KEY (idArea, ranking)
 ) WITH CLUSTERING ORDER BY (ranking DESC);
 
-CREATE TABLE comision(
-    idComision      UUID,
-    nombreComision  TEXT,
-    descripcion     TEXT,
-    PRIMARY KEY (idComision)
-);
-
-CREATE TABLE profesionales_por_comision(
-    idProfesional       UUID,
-    nombreProfesional   TEXT,
-    idComision          UUID,
-    nombreComision      TEXT,
-    PRIMARY KEY (nombreComision, idProfesional)
-) WITH CLUSTERING ORDER BY (idProfesional ASC);
-
 CREATE TABLE profesional(
-    idProfesional       UUID,
+    idProfesional       TEXT,
     nombreProfesional   TEXT,
-    idPais              UUID,
-    nombrePais          TEXT,
-    fechaNacimiento     DATE,
-    fechaInicio         DATE,
-    idArea              UUID,
-    nombreArea          TEXT,
+    anios               INT,
     PRIMARY KEY (idProfesional)
 );
-
-CREATE TABLE profesional_por_experiencia(
-    idProfesional       UUID,
-    nommbreProfesional  TEXT,
-    fechaInicio         DATE,
-    PRIMARY KEY (fechaInicio, idProfesional)
-) WITH CLUSTERING ORDER BY (idProfesional ASC);
 
 CREATE TABLE invento(
     idInvento           UUID,
