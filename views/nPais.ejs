@@ -72,7 +72,7 @@
             <form action="/nuevoPais" method="POST" enctype="application/json">
                 <div>
                     <label>Nombre</label>
-                    <input type="text" id="nombre" name="nombre">
+                    <input type="text" id="name" name="name">
                 </div>
                 <div>
                     <label>Alpha2 code</label>
@@ -86,11 +86,9 @@
                     <label>Borders</label>
                     <!-- multiple dropdown -->
                     <select id="borders" name="borders" class="chosen" multiple="true" style="width:100px;">
-                        <option value="1">Hola</option>
-                        <option value="2">jQuery</option>
-                        <option value="3">MooTools</option>
-                        <option value="4">Prototype</option>
-                        
+                        <% for(var i=0; i< valores.length; i++){ %>
+                            <option value="<%= valores[i].a3c %>"><%= valores[i].nombrePais %></option>
+                        <% } %>
                     </select>
                 </div>
                 <input type="submit" id="btnCrear" value="Crear">
