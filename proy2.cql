@@ -25,8 +25,15 @@ CREATE TABLE profesional(
     PRIMARY KEY (idProfesional, nombreProfesional, apellidoProfesional)
 )  WITH CLUSTERING ORDER BY (nombreProfesional ASC, apellidoProfesional ASC);
 
+CREATE TABLE profesional_por_area(
+    idProfesional       TEXT,
+    nombreProfesional   TEXT,
+    idArea              TEXT,
+    PRIMARY KEY (idProfesional, idArea)
+)  WITH CLUSTERING ORDER BY (idArea ASC);
+
 CREATE TABLE invento(
-    idInvento           TEXT,
+    idInvento           INT,
     nombreInvento       TEXT,
     idAutor             SET<TEXT>,
     nombreAutor         SET<TEXT>,
@@ -81,3 +88,20 @@ CREATE TABLE pais(
     borders         SET<TEXT>,
     PRIMARY KEY (nombrePais)
 );
+
+INSERT INTO area(idArea, nombreArea, descripcion, ranking)
+    VALUES ('A', 'Human Necessitites', 'Necesidades Humanas', 3);
+INSERT INTO area(idArea, nombreArea, descripcion, ranking)
+    VALUES ('B', 'Performing Operations; Transporint', 'Operaciones', 3);
+INSERT INTO area(idArea, nombreArea, descripcion, ranking)
+    VALUES ('C', 'Chemistry; Metallurgy', 'Quimica', 3);
+INSERT INTO area(idArea, nombreArea, descripcion, ranking)
+    VALUES ('D', 'Textiles; paper', 'Textiles', 2);
+INSERT INTO area(idArea, nombreArea, descripcion, ranking)
+    VALUES ('E', 'Fixed Constructing', 'Construcciones', 4);
+INSERT INTO area(idArea, nombreArea, descripcion, ranking)
+    VALUES ('F', 'Mechanical Engineering; Lighting; Heating; Weapons; Blasting Engines; Pumps', 'Electronica', 4);
+INSERT INTO area(idArea, nombreArea, descripcion, ranking)
+    VALUES ('G', 'Physics', 'Fisica', 4);
+INSERT INTO area(idArea, nombreArea, descripcion, ranking)
+    VALUES ('H', 'Electricity', 'Electricidad', 2);
