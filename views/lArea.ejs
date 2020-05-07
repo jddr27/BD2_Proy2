@@ -5,7 +5,6 @@
             <meta name="viewport" content="width=device-width, initial-scale=1">
             <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
             <link rel="stylesheet" type="text/css" href="/static/tln.min.css"/>
-            <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
             <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
             <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
             <script src="/static/prueba_js.js"></script>
@@ -94,7 +93,7 @@
                     <% for(var i=0; i< valores.length; i++){ %>
                     <tr>
                         <form action="/filtrarDetalle" method="POST" enctype="application/json">
-                            <td><input type="submit" name="btnDetalle" value="<%= valores[i].idinvento %>" class="btn btn-default"></td>
+                            <td><input type="submit" name="btnDetalle" value="<%= valores[i].idinvento %>" class="btn btn-primary"></td>
                         </form>
                         <td><%= valores[i].nombreinvento %></td>
                         <td><%= valores[i].nombrearea %></td> 
