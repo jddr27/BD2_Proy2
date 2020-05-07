@@ -20,11 +20,18 @@ app.use(bodyParser.urlencoded({ extended: true  }));
 app.use(bodyParser.json()); 
 app.use('/static', express.static(__dirname + '/public'));
 
-var salida = "";
-var arreglo = [];
+var listaArea = [];
+var listaAutor = [];
+var listaPais = [];
+var pateArea = [];
+var pateAutor = [];
+var pais = "";
+var titulo = "";
+var descri = "";
+var fecha = "";
 
 app.get('/',function(req, res){
-    res.render('main',{consola:salida, valores:arreglo});
+    res.render('main');
 });
 
 app.get('/nPais',function(req, res){
@@ -44,7 +51,59 @@ app.get('/nPais',function(req, res){
 });
 
 app.get('/nPate',function(req, res){
-    res.render('nPate',{consola:salida, valores:arreglo});
+    let paises = []
+    let inves = []
+    let areas = []
+    let query = "SELECT * FROM pais_por_a2c;";
+    client.execute(query,[], (err, result) => {
+        if(err){
+            salida = err;
+            console.log("ERROR" + err);
+            return res.send(err.toString());
+        } else {
+            paises = result.rows;
+        }
+    });
+    query = "SELECT idAutor, nombreAutor, apellidoAutor FROM autor;";
+    client.execute(query,[], (err, result) => {
+        if(err){
+            salida = err;
+            console.log("ERROR" + err);
+            return res.send(err.toString());
+        } else {
+            result.rows.forEach(function(inv) {
+                inves.append({"idautor":inv.idautor, "nombreautor":inv.nombreautor +" "+inv.apellidoautor});
+            });
+        }
+    });
+    query = "SELECT idArea, nombreArea FROM area;";
+    client.execute(query,[], (err, result) => {
+        if(err){
+            salida = err;
+            console.log("ERROR" + err);
+            return res.send(err.toString());
+        } else {
+            areas = result.rows;
+        }
+    });
+    res.render('nPate',{inves:inves, paises:paises, areas:areas});
+});
+
+app.get('/nPate2',function(req, res){
+    let paises = []
+    let query = "SELECT * FROM colaboradores_por_area WHERE idArea="+ area +";";
+    client.execute(query,[], (err, result) => {
+        if(err){
+            salida = err;
+            console.log("ERROR" + err);
+            return res.send(err.toString());
+        } else {
+            paises = result.rows;
+            //console.log(result.rows);
+            return res.render('nPais',{valores:paises});
+        }
+    });
+    res.render('nPate2',{valores:arreglo});
 });
 
 app.get('/nCola',function(req, res){
@@ -155,11 +214,11 @@ app.get('/cargarCola',function(req, res){
                             "VALUES ('"+ element.examiner_id +"', '"+ element.examiner_first_name +"', '"+
                             element.examiner_last_name + "', '" + anio + "-01-01', {'"+ areas +"});";
             //console.log(query);
-            /*client.execute(query,[], (err, result) => {
+            client.execute(query,[], (err, result) => {
                 if(err){
                     console.log("ERROR" + err);
                 }
-            });*/
+            });
             personas.IPCs.forEach(function(area) {
                 query = "INSERT INTO profesional_por_area (idProfesional, nombreProfesional, idArea) " +  
                             "VALUES ('"+ element.examiner_id +"', '"+ element.examiner_first_name +" "+ 
@@ -202,6 +261,26 @@ app.post('/nuevoCola', (req, res) => {
     });
     console.log('termino de crear el colaborador');
     res.redirect('/nCola');
+});
+
+app.get('/cargarAutor',function(req, res){
+    let rawdata = fs.readFileSync('./data/patents.json');
+    let exjson = JSON.parse(rawdata);
+    let query = "";
+    exjson.patents.forEach(function(personas) {
+        personas.inventors.forEach(function(element) {
+            query = "INSERT INTO autor (idAutor, nombreAutor, apellidoAutor, idPais) " +  
+                            "VALUES ('"+ element.inventor_id +"', '"+ element.inventor_first_name +"', '"+
+                            element.inventor_last_name + "', '" + element.inventor_country + "');";
+            //console.log(query);
+            client.execute(query,[], (err, result) => {
+                if(err){
+                    console.log("ERROR" + err);
+                }
+            });
+        });
+    });
+    res.redirect('/');
 });
 
 function makeid(length) {
