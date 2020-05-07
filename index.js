@@ -23,6 +23,7 @@ app.use('/static', express.static(__dirname + '/public'));
 var listaArea = [];
 var listaAutor = [];
 var listaPais = [];
+var resultado = null;
 var patenArea = [];
 var patenAutor = [];
 var pateiArea = [];
@@ -133,7 +134,22 @@ app.get('/lPais',function(req, res){
 });
 
 app.get('/lArea',function(req, res){
-    res.render('lArea',{consola:salida, valores:arreglo});
+    let areas = []
+    let query = "SELECT idArea, nombreArea FROM area;";
+    client.execute(query,[], (err, result) => {
+        if(err){
+            console.log("ERROR" + err);
+            return res.send(err.toString());
+        } else {
+            areas = result.rows;
+            return res.render('lArea',{valores:listaArea, areas:areas});
+        }
+    });
+});
+
+app.get('/detalle',function(req, res){
+    console.log(resultado);
+    return res.render('detalle',{res:resultado});
 });
 
 app.get('/cargarPais',function(req, res){
@@ -365,7 +381,7 @@ app.get('/cargarPate',function(req, res){
         });
 
         query = "INSERT INTO inventos_por_pais (idInvento, nombreInvento, idPais) " +  
-                    "VALUES ("+ tmpId +", '"+ tmpNom +"', '"+  + "', '"+ tmpPais +"');";
+                    "VALUES ("+ tmpId +", '"+ tmpNom +"', '"+ tmpPais +"');";
         //console.log(query);
         client.execute(query,[], (err, result) => {
             if(err){
@@ -373,27 +389,27 @@ app.get('/cargarPate',function(req, res){
             }
         });
 
-        tmpiArea.forEach(function(ele) {
-            query = "INSERT INTO inventos_por_area (idInvento, nombreInvento, idArea) " +  
-                        "VALUES ("+ tmpId +", '"+ tmpNom +"', '"+  + "', '"+ ele +"');";
+        for(let i=0; i<tmpiArea.length; i++){
+            query = "INSERT INTO inventos_por_area (idInvento, nombreInvento, idArea, nombreArea) " +  
+                        "VALUES ("+ id +", '"+ titulo +"', '"+ tmpiArea[i] +"', '"+ tmpnArea[i] +"');";
             //console.log(query);
             client.execute(query,[], (err, result) => {
                 if(err){
                     console.log("ERROR" + err);
                 }
             });
-        });
-
-        tmpiAutor.forEach(function(ele) {
-            query = "INSERT INTO inventos_por_autor (idInvento, nombreInvento, idAutor) " +  
-                        "VALUES ("+ tmpId +", '"+ tmpNom +"', '"+  + "', '"+ ele +"');";
+        }
+    
+        for(let i=0; i<tmpiAutor.length; i++){
+            query = "INSERT INTO inventos_por_autor (idInvento, nombreInvento, idAutor, nombreAutor) " +  
+                        "VALUES ("+ id +", '"+ titulo +"', '"+ tmpiAutor[i] +"', '"+ tmpnAutor[i] +"');";
             //console.log(query);
             client.execute(query,[], (err, result) => {
                 if(err){
                     console.log("ERROR" + err);
                 }
             });
-        });
+        }
     });
     res.redirect('/');
 });
@@ -468,7 +484,7 @@ app.post('/nuevaPate2', (req, res) => {
     });
 
     query = "INSERT INTO inventos_por_pais (idInvento, nombreInvento, idPais) " +  
-                    "VALUES ("+ id +", '"+ titulo +"', '"+  + "', '"+ iPais +"');";
+                    "VALUES ("+ id +", '"+ titulo +"', '"+ iPais +"');";
     //console.log(query);
     client.execute(query,[], (err, result) => {
         if(err){
@@ -476,31 +492,71 @@ app.post('/nuevaPate2', (req, res) => {
         }
     });
 
-    pateiArea.forEach(function(ele) {
-        query = "INSERT INTO inventos_por_area (idInvento, nombreInvento, idArea) " +  
-                    "VALUES ("+ id +", '"+ titulo +"', '"+  + "', '"+ ele +"');";
+    for(let i=0; i<pateiArea.length; i++){
+        query = "INSERT INTO inventos_por_area (idInvento, nombreInvento, idArea, nombreArea) " +  
+                    "VALUES ("+ id +", '"+ titulo +"', '"+ pateiArea[i] +"', '"+ patenArea[i] +"');";
         //console.log(query);
         client.execute(query,[], (err, result) => {
             if(err){
                 console.log("ERROR" + err);
             }
         });
-    });
+    }
 
-    pateiAutor.forEach(function(ele) {
-        query = "INSERT INTO inventos_por_autor (idInvento, nombreInvento, idAutor) " +  
-                    "VALUES ("+ id +", '"+ titulo +"', '"+  + "', '"+ ele +"');";
+    for(let i=0; i<pateiAutor.length; i++){
+        query = "INSERT INTO inventos_por_autor (idInvento, nombreInvento, idAutor, nombreAutor) " +  
+                    "VALUES ("+ id +", '"+ titulo +"', '"+ pateiAutor[i] +"', '"+ patenAutor[i] +"');";
         //console.log(query);
         client.execute(query,[], (err, result) => {
             if(err){
                 console.log("ERROR" + err);
             }
         });
-    });
+    }
     
-
     console.log('termino de crear una patente')
     res.redirect('/nPate');
+});
+
+app.post('/filtrarArea', (req, res) => {
+    console.log('entro a filtrar por area');
+    let listaArea = []
+    let areas = []
+    if (typeof req.body.areas != "string") {
+        req.body.inves.forEach(function(inv) {
+            areas.push(inv);
+        });
+    }
+    else{
+        areas.push(req.body.areas);
+    }
+    let query = "SELECT * FROM inventos_por_area WHERE idArea IN ('"+ areas.join("', '").toString(); +"');";
+    //console.log(query);
+    client.execute(query,[], (err, result) => {
+        if(err){
+            console.log("ERROR" + err);
+            return res.send(err.toString());
+        } else {
+            listaArea = result.rows;
+            return res.redirect('/lArea');
+        }
+    });
+});
+
+app.post('/filtrarDetalle', (req, res) => {
+    console.log('entro a detalle');
+    resultado = null;
+    let query = "SELECT * FROM invento WHERE idInvento='"+ req.body.btnDetalle +"';";
+    //console.log(query);
+    client.execute(query,[], (err, result) => {
+        if(err){
+            console.log("ERROR" + err);
+            return res.send(err.toString());
+        } else {
+            resultado = result.rows[0];
+            return res.redirect('/detalle');
+        }
+    });
 });
 
 function makeid(length) {

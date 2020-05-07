@@ -1,6 +1,6 @@
 <html lang="es">
     <head>
-            <title>Listar por area</title>
+            <title>Detalle</title>
             <meta charset="utf-8">
             <meta name="viewport" content="width=device-width, initial-scale=1">
             <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -8,11 +8,6 @@
             <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
             <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
             <script src="/static/prueba_js.js"></script>
-
-            <!-- Chosen -->
-            <link href='/static/chosen-js/chosen.min.css' rel='stylesheet' type='text/css'>
-            <script src='/static/chosen-js/chosen.jquery.min.js' type='text/javascript'></script>
-
             <style>    
               /* Set black background color, white text and some padding */
               nav {
@@ -61,6 +56,7 @@
                             <ul class="dropdown-menu">
                                 <li><a href="/lPais">Por pais</a></li>
                                 <li><a href="/lInve">Por inventor</a></li>
+                                <li><a href="/lArea">Por area</a></li>
                             </ul>
                         </li>
                     </ul>
@@ -68,45 +64,11 @@
             </div>
         </nav>
 
-        <div id="wrapper" align="center">
-            <h3> Listar inventos por area de innovacion </h3>
-            <form action="/filtrarArea" method="POST" enctype="application/json">
-                <div>
-                    <label>Area</label>
-                    <!-- multiple dropdown -->
-                    <select id="areas" name="areas" class="chosen" multiple="true" style="width:300px;">
-                        <% for(var i=0; i< areas.length; i++){ %>
-                            <option value="<%= areas[i].idarea %>"><%= areas[i].nombrearea %></option>
-                        <% } %>
-                    </select>
-                </div>
-                <input type="submit" id="btnFiltrar" value="Filtrar">
-            </form>
+        <h1> Proyecto 2 </h1> 
+        <br> 
+        <h3> José Daniel De León Ruiz </h3> 
+        <h3> 201503393</h3> 
+        <br> 
 
-            <% if(valores.length > 0){ %>
-                <table style="width: fit-content;">
-                    <tr>
-                        <th>ID</th>
-                        <th>Titulo</th>
-                        <th>Area</th> 
-                    </tr>
-                    <% for(var i=0; i< valores.length; i++){ %>
-                    <tr>
-                        <form action="/filtrarDetalle" method="POST" enctype="application/json">
-                            <td><input type="submit" name="btnDetalle" value="<%= valores[i].idinvento %>" class="btn btn-default"></td>
-                        </form>
-                        <td><%= valores[i].nombreinvento %></td>
-                        <td><%= valores[i].nombrearea %></td> 
-                    </tr>
-                    <% } %>
-                </table>
-            <% } %>
-
-            <script>
-                jQuery(document).ready(function(){
-                    jQuery(".chosen").data("placeholder","Seleccionar areas...").chosen();
-                });
-            </script>
-        </div>
     </body>
 </html>
