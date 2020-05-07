@@ -97,7 +97,7 @@ app.get('/nPate2',function(req, res){
     let colas = []
     let tmp = pateiArea.join("' OR idarea = '").toString();
     let query = "SELECT * FROM colaboradores_por_area WHERE idArea='"+ tmp +"';";
-    console.log(query);
+    //console.log(query);
     client.execute(query,[], (err, result) => {
         if(err){
             console.log("ERROR" + err);
@@ -108,7 +108,6 @@ app.get('/nPate2',function(req, res){
             return res.render('nPate2',{colas:colas});
         }
     });
-    res.render("/");
 });
 
 app.get('/nCola',function(req, res){
