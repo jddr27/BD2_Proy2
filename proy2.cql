@@ -29,8 +29,8 @@ CREATE TABLE profesional_por_area(
     idProfesional       TEXT,
     nombreProfesional   TEXT,
     idArea              TEXT,
-    PRIMARY KEY (idProfesional, idArea)
-)  WITH CLUSTERING ORDER BY (idArea ASC);
+    PRIMARY KEY (idArea, idProfesional)
+)  WITH CLUSTERING ORDER BY (idProfesional ASC);
 
 CREATE TABLE invento(
     idInvento           INT,
@@ -52,22 +52,22 @@ CREATE TABLE inventos_por_area(
     idInvento       TEXT,
     nombreInvento   TEXT,
     idArea          TEXT,
-    PRIMARY KEY (idInvento, idArea)
-) WITH CLUSTERING ORDER BY (idArea ASC);
+    PRIMARY KEY (idArea, idInvento)
+) WITH CLUSTERING ORDER BY (idInvento ASC);
 
 CREATE TABLE inventos_por_pais(
     idInvento       TEXT,
     nombreInvento   TEXT,
     idPais          TEXT,
-    PRIMARY KEY (idInvento, idPais)
-) WITH CLUSTERING ORDER BY (idPais ASC);
+    PRIMARY KEY (idPais, idInvento)
+) WITH CLUSTERING ORDER BY (idInvento ASC);
 
 CREATE TABLE inventos_por_autor(
     idInvento       TEXT,
     nombreInvento   TEXT,
     idAutor         TEXT,
-    PRIMARY KEY (idInvento, idAutor)
-) WITH CLUSTERING ORDER BY (idAutor ASC);
+    PRIMARY KEY (idAutor, idInvento)
+) WITH CLUSTERING ORDER BY (idInvento ASC);
 
 CREATE TABLE pais_por_a2c (
     a2c             TEXT,

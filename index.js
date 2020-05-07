@@ -213,7 +213,7 @@ app.get('/cargarCola',function(req, res){
         areas = areas.substring(0,areas.length-3);
         personas.examiners.forEach(function(element) {
             anio = Math.floor(Math.random() * (2019 - 2010)) + 2010;
-            query = "INSERT INTO profesional (idProfesional, nombreProfesional, apellidoProfesional, fechaInicio, areas) " +  
+            /*query = "INSERT INTO profesional (idProfesional, nombreProfesional, apellidoProfesional, fechaInicio, areas) " +  
                             "VALUES ('"+ element.examiner_id +"', '"+ element.examiner_first_name +"', '"+
                             element.examiner_last_name + "', '" + anio + "-01-01', {'"+ areas +"});";
             //console.log(query);
@@ -221,7 +221,7 @@ app.get('/cargarCola',function(req, res){
                 if(err){
                     console.log("ERROR" + err);
                 }
-            });
+            });*/
             personas.IPCs.forEach(function(area) {
                 query = "INSERT INTO profesional_por_area (idProfesional, nombreProfesional, idArea) " +  
                             "VALUES ('"+ element.examiner_id +"', '"+ element.examiner_first_name +" "+ 
