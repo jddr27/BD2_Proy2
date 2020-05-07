@@ -531,13 +531,15 @@ app.post('/filtrarArea', (req, res) => {
         areas.push(req.body.areas);
     }
     let query = "SELECT * FROM inventos_por_area WHERE idArea IN ('"+ areas.join("', '").toString() +"');";
-    //console.log(query);
+    console.log(query);
     client.execute(query,[], (err, result) => {
         if(err){
             console.log("ERROR" + err);
             return res.send(err.toString());
         } else {
+            console.log(result.rows);
             listaArea = result.rows;
+            console.log("LISTA:" + listaArea);
             return res.redirect('/lArea');
         }
     });
