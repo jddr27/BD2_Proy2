@@ -142,6 +142,7 @@ app.get('/lArea',function(req, res){
             return res.send(err.toString());
         } else {
             areas = result.rows;
+            console.log("LISTA:" + listaArea);
             return res.render('lArea',{valores:listaArea, areas:areas});
         }
     });
@@ -539,7 +540,7 @@ app.post('/filtrarArea', (req, res) => {
         } else {
             console.log(result.rows);
             listaArea = result.rows;
-            console.log("LISTA:" + listaArea);
+            //console.log("LISTA:" + listaArea);
             return res.redirect('/lArea');
         }
     });
