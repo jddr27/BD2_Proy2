@@ -353,7 +353,7 @@ app.get('/cargarPate',function(req, res){
 
         query = "INSERT INTO invento (idInvento, nombreInvento, idAutor, nombreAutor, descripcion,"+
                     " fechaPresentacion, idPais, idArea, nombreArea, idProfesional, nombreProfesional) " +  
-                        "VALUES ("+ tmpId +", '"+ tmpNom +"', '"+  + "', {'"+ tmpiAutor.join("','").toString() +"'}, {'" 
+                        "VALUES ("+ tmpId +", '"+ tmpNom +"', {'"+ tmpiAutor.join("','").toString() +"'}, {'" 
                         + tmpnAutor.join("','").toString() +"'}, '"+ tmpDes +"', '"+ tmpFec +"', '"+ tmpPais +"', {'"+ 
                         tmpiArea.join("','").toString() +"'}, {'"+ tmpnArea.join("','").toString()+"'}, {'"+ 
                         tmpiCol.join("','").toString() +"'}, {'"+ tmpnCol.join("','").toString() +"'});";
