@@ -292,7 +292,7 @@ app.post('/nuevaPate', (req, res) => {
     pateiAutor = [];
     patenArea = [];
     patenAutor = [];
-    console.log(req.body);
+    //console.log(req.body);
     if (typeof req.body.inves != "string") {
         req.body.inves.forEach(function(inv) {
             let tmpInv = inv.split("*");
@@ -331,6 +331,7 @@ app.post('/nuevaPate2', (req, res) => {
     let pateiCol = [];
     let patenCol = [];
     let id = Math.floor(Math.random() * (10000000 - 1000000)) + 1000000;
+    let query = "";
     if (typeof req.body.colas != "string") {
         req.body.colas.forEach(function(col) {
             let tmpCol = col.split("*");
