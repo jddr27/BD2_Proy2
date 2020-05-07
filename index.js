@@ -293,16 +293,30 @@ app.post('/nuevaPate', (req, res) => {
     patenArea = [];
     patenAutor = [];
     console.log(req.body);
-    req.body.inves.forEach(function(inv) {
-        let tmpInv = inv.split("*");
+    if (typeof req.body.inves != "string") {
+        req.body.inves.forEach(function(inv) {
+            let tmpInv = inv.split("*");
+            pateiAutor.push(tmpInv[0]);
+            patenAutor.push(tmpInv[1]);
+        });
+    }
+    else{
+        let tmpInv = req.body.inves.split("*");
         pateiAutor.push(tmpInv[0]);
         patenAutor.push(tmpInv[1]);
-    });
-    req.body.areas.forEach(function(area) {
-        let tmpArea = area.split("*");
+    }
+    if (typeof req.body.areas != "string") {
+        req.body.areas.forEach(function(area) {
+            let tmpArea = area.split("*");
+            pateiArea.push(tmpArea[0]);
+            patenArea.push(tmpArea[1]);
+        });
+    }
+    else{
+        let tmpArea = req.body.areas.split("*");
         pateiArea.push(tmpArea[0]);
         patenArea.push(tmpArea[1]);
-    });
+    }
     let tmpPais = req.body.pais.split("*");
     iPais = tmpPais[0];
     nPais = tmpPais[1];
