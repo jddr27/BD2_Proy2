@@ -62,31 +62,36 @@ app.get('/nPate',function(req, res){
             return res.send(err.toString());
         } else {
             paises = result.rows;
-        }
-    });
-    query = "SELECT idAutor, nombreAutor, apellidoAutor FROM autor;";
-    client.execute(query,[], (err, result) => {
-        if(err){
-            salida = err;
-            console.log("ERROR" + err);
-            return res.send(err.toString());
-        } else {
-            result.rows.forEach(function(inv) {
-                inves.push({"idautor":inv.idautor, "nombreautor":inv.nombreautor +" "+inv.apellidoautor});
+
+            query = "SELECT idAutor, nombreAutor, apellidoAutor FROM autor;";
+            client.execute(query,[], (err, result) => {
+                if(err){
+                    salida = err;
+                    console.log("ERROR" + err);
+                    return res.send(err.toString());
+                } else {
+                    result.rows.forEach(function(inv) {
+                        inves.push({"idautor":inv.idautor, "nombreautor":inv.nombreautor +" "+inv.apellidoautor});
+                    });
+
+                    query = "SELECT idArea, nombreArea FROM area;";
+                    client.execute(query,[], (err, result) => {
+                        if(err){
+                            salida = err;
+                            console.log("ERROR" + err);
+                            return res.send(err.toString());
+                        } else {
+                            areas = result.rows;
+                            return res.render('nPate',{inves:inves, paises:paises, areas:areas});
+                        }
+                    });
+
+                }
             });
+
+
         }
     });
-    query = "SELECT idArea, nombreArea FROM area;";
-    client.execute(query,[], (err, result) => {
-        if(err){
-            salida = err;
-            console.log("ERROR" + err);
-            return res.send(err.toString());
-        } else {
-            areas = result.rows;
-        }
-    });
-    res.render('nPate',{inves:inves, paises:paises, areas:areas});
 });
 
 app.get('/nPate2',function(req, res){
