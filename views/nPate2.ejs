@@ -76,7 +76,7 @@
                     <!-- multiple dropdown -->
                     <select id="colas" name="colas" class="chosen" multiple="true" style="width:300px;">
                         <% for(var i=0; i< colas.length; i++){ %>
-                            <option value="<%= colas[i].idprofesional %>,<%= colas[i].nombreprofesional %>"><%= colas[i].nombreprofesional %></option>
+                            <option value="<%= colas[i].idprofesional %>*<%= colas[i].nombreprofesional %>"><%= colas[i].nombreprofesional %></option>
                         <% } %>
                     </select>
                 </div>

@@ -96,7 +96,7 @@ app.get('/nPate',function(req, res){
 app.get('/nPate2',function(req, res){
     let colas = []
     let tmp = pateiArea.join("' OR idarea = '").toString();
-    let query = "SELECT * FROM colaboradores_por_area WHERE idArea='"+ tmp +"';";
+    let query = "SELECT * FROM profesional_por_area WHERE idArea='"+ tmp +"';";
     //console.log(query);
     client.execute(query,[], (err, result) => {
         if(err){
@@ -324,6 +324,40 @@ app.post('/nuevaPate', (req, res) => {
     descri = req.body.descri;
     fecha = req.body.fecha;
     res.redirect('/nPate2');
+});
+
+app.post('/nuevaPate2', (req, res) => {
+    console.log('continua a crear una patente');
+    let pateiCol = [];
+    let patenCol = [];
+    let id = Math.floor(Math.random() * (10000000 - 1000000)) + 1000000;
+    if (typeof req.body.colas != "string") {
+        req.body.colas.forEach(function(col) {
+            let tmpCol = col.split("*");
+            pateiCol.push(tmpCol[0]);
+            patenCol.push(tmpCol[1]);
+        });
+    }
+    else{
+        let tmpCol = req.body.colas.split("*");
+        pateiCol.push(tmpCol[0]);
+        patenCol.push(tmpCol[1]);
+    }
+    query = "INSERT INTO invento (idInvento, nombreInvento, idAutor, nombreAutor, descripcion,"+
+            " fechaPresentacion, idPais, nombrePais, idArea, nombreArea, idProfesional, nombreProfesional) " +  
+                "VALUES ("+ id +", '"+ titulo +"', '"+  + "', {'"+ pateiAutor.join("','").toString() +"'}, {'" 
+                + patniAutor.join("','").toString() +"'}, '"+ descri +"', '"+ fecha +"', '"+ iPais +"', '" 
+                + nPais +"', {'"+ pateiArea.join("','").toString() +"'}, {'"+ patenArea.join("','").toString() 
+                +"'}, {'"+ pateiCol.join("','").toString() +"'}, {'"+ patenCol.join("','").toString() +"'});";
+    console.log(query);
+    /*client.execute(query,[], (err, result) => {
+        if(err){
+            console.log("ERROR" + err);
+        }
+    });*/
+
+    console.log('termino de crear una patente')
+    res.redirect('/nPate');
 });
 
 function makeid(length) {
