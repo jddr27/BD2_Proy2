@@ -357,7 +357,7 @@ app.get('/cargarPate',function(req, res){
                         + tmpnAutor.join("','").toString() +"'}, '"+ tmpDes +"', '"+ tmpFec +"', '"+ tmpPais +"', {'"+ 
                         tmpiArea.join("','").toString() +"'}, {'"+ tmpnArea.join("','").toString()+"'}, {'"+ 
                         tmpiCol.join("','").toString() +"'}, {'"+ tmpnCol.join("','").toString() +"'});";
-        console.log(query);
+        //console.log(query);
         client.execute(query,[], (err, result) => {
             if(err){
                 console.log("ERROR" + err);
@@ -366,7 +366,7 @@ app.get('/cargarPate',function(req, res){
 
         query = "INSERT INTO inventos_por_pais (idInvento, nombreInvento, idPais) " +  
                     "VALUES ("+ tmpId +", '"+ tmpNom +"', '"+  + "', '"+ tmpPais +"');";
-        console.log(query);
+        //console.log(query);
         client.execute(query,[], (err, result) => {
             if(err){
                 console.log("ERROR" + err);
@@ -376,7 +376,7 @@ app.get('/cargarPate',function(req, res){
         pateiArea.forEach(function(ele) {
             query = "INSERT INTO inventos_por_area (idInvento, nombreInvento, idArea) " +  
                         "VALUES ("+ tmpId +", '"+ tmpNom +"', '"+  + "', '"+ ele +"');";
-            console.log(query);
+            //console.log(query);
             client.execute(query,[], (err, result) => {
                 if(err){
                     console.log("ERROR" + err);
@@ -387,7 +387,7 @@ app.get('/cargarPate',function(req, res){
         pateiAutor.forEach(function(ele) {
             query = "INSERT INTO inventos_por_autor (idInvento, nombreInvento, idAutor) " +  
                         "VALUES ("+ tmpId +", '"+ tmpNom +"', '"+  + "', '"+ ele +"');";
-            console.log(query);
+            //console.log(query);
             client.execute(query,[], (err, result) => {
                 if(err){
                     console.log("ERROR" + err);
@@ -456,11 +456,11 @@ app.post('/nuevaPate2', (req, res) => {
     }
     query = "INSERT INTO invento (idInvento, nombreInvento, idAutor, nombreAutor, descripcion,"+
             " fechaPresentacion, idPais, idArea, nombreArea, idProfesional, nombreProfesional) " +  
-                "VALUES ("+ id +", '"+ titulo +"', '"+  + "', {'"+ pateiAutor.join("','").toString() +"'}, {'" 
+                "VALUES ("+ id +", '"+ titulo +"', {'"+ pateiAutor.join("','").toString() +"'}, {'" 
                 + patenAutor.join("','").toString() +"'}, '"+ descri +"', '"+ fecha +"', '"+ iPais +"', {'"+ 
                 pateiArea.join("','").toString() +"'}, {'"+ patenArea.join("','").toString() 
                 +"'}, {'"+ pateiCol.join("','").toString() +"'}, {'"+ patenCol.join("','").toString() +"'});";
-    console.log(query);
+    //console.log(query);
     client.execute(query,[], (err, result) => {
         if(err){
             console.log("ERROR" + err);
@@ -469,7 +469,7 @@ app.post('/nuevaPate2', (req, res) => {
 
     query = "INSERT INTO inventos_por_pais (idInvento, nombreInvento, idPais) " +  
                     "VALUES ("+ id +", '"+ titulo +"', '"+  + "', '"+ iPais +"');";
-    console.log(query);
+    //console.log(query);
     client.execute(query,[], (err, result) => {
         if(err){
             console.log("ERROR" + err);
@@ -479,7 +479,7 @@ app.post('/nuevaPate2', (req, res) => {
     pateiArea.forEach(function(ele) {
         query = "INSERT INTO inventos_por_area (idInvento, nombreInvento, idArea) " +  
                     "VALUES ("+ id +", '"+ titulo +"', '"+  + "', '"+ ele +"');";
-        console.log(query);
+        //console.log(query);
         client.execute(query,[], (err, result) => {
             if(err){
                 console.log("ERROR" + err);
@@ -490,7 +490,7 @@ app.post('/nuevaPate2', (req, res) => {
     pateiAutor.forEach(function(ele) {
         query = "INSERT INTO inventos_por_autor (idInvento, nombreInvento, idAutor) " +  
                     "VALUES ("+ id +", '"+ titulo +"', '"+  + "', '"+ ele +"');";
-        console.log(query);
+        //console.log(query);
         client.execute(query,[], (err, result) => {
             if(err){
                 console.log("ERROR" + err);
