@@ -530,7 +530,7 @@ app.post('/filtrarArea', (req, res) => {
     else{
         areas.push(req.body.areas);
     }
-    let query = "SELECT * FROM inventos_por_area WHERE idArea IN ('"+ areas.join("', '").toString(); +"');";
+    let query = "SELECT * FROM inventos_por_area WHERE idArea IN ('"+ areas.join("', '").toString() +"');";
     //console.log(query);
     client.execute(query,[], (err, result) => {
         if(err){
