@@ -1,97 +1,66 @@
 CREATE KEYSPACE proyecto WITH REPLICATION = {'class':'SimpleStrategy', 'replication_factor': '3'};
 
 CREATE TABLE autor (
-    idAutor         UUID,
+    idAutor         TEXT,
     nombreAutor     TEXT,
-    idPais          UUID,
-    nombrePais      TEXT,
-    sexo            INT,
-    fechaNacimiento DATE,
-    PRIMARY KEY (idAutor)
-);
-
-CREATE TABLE autor_por_nombre(
-    idAutor     UUID,
-    nombreAutor TEXT,
-    PRIMARY KEY (nombreAutor, idAutor)
-) WITH CLUSTERING ORDER BY (idAutor ASC);
+    apellidoAutor   TEXT,
+    idPais          TEXT,
+    PRIMARY KEY (idAutor, nombreAutor, apellidoAutor)
+) WITH CLUSTERING ORDER BY (nombreAutor ASC, apellidoAutor ASC);
 
 CREATE TABLE area(
-    idArea      UUID,
+    idArea      TEXT,
     nombreArea  TEXT,
     descripcion TEXT,
     ranking     INT,
     PRIMARY KEY (idArea)
 );
 
-CREATE TABLE area_por_ranking(
-    idArea      UUID,
-    nombreArea  TEXT,
-    ranking     INT,
-    PRIMARY KEY (idArea, ranking)
-) WITH CLUSTERING ORDER BY (ranking DESC);
-
 CREATE TABLE profesional(
     idProfesional       TEXT,
     nombreProfesional   TEXT,
-    apellidoProfesional   TEXT,
+    apellidoProfesional TEXT,
     fechaInicio         DATE,
-    PRIMARY KEY (idProfesional)
-);
+    area                SET<TEXT>,
+    PRIMARY KEY (idProfesional, nombreProfesional, apellidoProfesional)
+)  WITH CLUSTERING ORDER BY (nombreProfesional ASC, apellidoProfesional ASC);
 
 CREATE TABLE invento(
-    idInvento           UUID,
+    idInvento           TEXT,
     nombreInvento       TEXT,
-    idAutor             UUID,
-    nombreAutor         TEXT,
+    idAutor             SET<TEXT>,
+    nombreAutor         SET<TEXT>,
     descripcion         TEXT,
     fechaPresentacion   DATE,
-    idPais              UUID,
+    idPais              TEXT,
     nombrePais          TEXT,
-    idArea              UUID,
-    nombreArea          TEXT,
+    idArea              SET<TEXT>,
+    nombreArea          SET<TEXT>,
+    idProfesional       SET<TEXT>,
+    nombreProfesional   SET<TEXT>,
     PRIMARY KEY (idInvento)
 );
 
 CREATE TABLE inventos_por_area(
-    idInvento       UUID,
+    idInvento       TEXT,
     nombreInvento   TEXT,
-    idArea          UUID,
-    nombreArea      TEXT,
-    PRIMARY KEY (nombreArea, idInvento)
-) WITH CLUSTERING ORDER BY (idInvento ASC);
+    idArea          TEXT,
+    PRIMARY KEY (idInvento, idArea)
+) WITH CLUSTERING ORDER BY (idArea ASC);
 
 CREATE TABLE inventos_por_pais(
-    idInvento       UUID,
+    idInvento       TEXT,
     nombreInvento   TEXT,
-    idPais          UUID,
-    nombrePais      TEXT,
-    PRIMARY KEY (nombrePais, idInvento)
-) WITH CLUSTERING ORDER BY (idInvento ASC);
+    idPais          TEXT,
+    PRIMARY KEY (idInvento, idPais)
+) WITH CLUSTERING ORDER BY (idPais ASC);
 
 CREATE TABLE inventos_por_autor(
-    idInvento       UUID,
+    idInvento       TEXT,
     nombreInvento   TEXT,
-    idAutor         UUID,
-    nombreAutor     TEXT,
-    PRIMARY KEY (nombreAutor, idInvento)
-) WITH CLUSTERING ORDER BY (idInvento ASC);
-
-CREATE TABLE inventos_por_fronteras(
-    idInvento       UUID,
-    nombreInvento   TEXT,
-    idPais          UUID,
-    nombrePais      TEXT,
-    PRIMARY KEY (nombrePais, idInvento)
-) WITH CLUSTERING ORDER BY (idInvento ASC);
-
-CREATE TABLE inventos_por_profesional(
-    idInvento           UUID,
-    nombreInvento       TEXT,
-    idProfesional       UUID,
-    nombreProfesional   TEXT,
-    PRIMARY KEY (nombreProfesional, idInvento)
-) WITH CLUSTERING ORDER BY (idInvento ASC);
+    idAutor         TEXT,
+    PRIMARY KEY (idInvento, idAutor)
+) WITH CLUSTERING ORDER BY (idAutor ASC);
 
 CREATE TABLE pais_por_a2c (
     a2c             TEXT,

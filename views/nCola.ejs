@@ -67,26 +67,19 @@
             <h3> Crear registro de colaborador </h3>
             <form action="/nuevoCola" method="POST" enctype="application/json">
                 <div>
+                    <label>Nombre</label>
+                    <input type="text" id="name" name="name">
+                </div>
+                <div>
+                    <label>Apellido</label>
+                    <input type="text" id="ape" name="ape">
+                </div>
+                <div>
                     <label>Fecha</label>
-                    <input type="date" id="nFecha" name="nFecha">
-                </div>
-                <div>
-                    <label>Email</label>
-                    <input type="email" id="nEmail" name="nEmail">
-                </div>
-                <div>
-                    <label>Titulo</label>
-                    <textarea id="nTitulo" name="nTitulo" rows="1" cols="50"> </textarea>
-                </div>
-                <div>
-                    <label>Descripcion</label>
-                    <textarea id="nDescri" name="nDescri" rows="5" cols="50"> </textarea>
+                    <input type="date" id="fecha" name="fecha">
                 </div>
                 <input type="submit" id="btnCrear" value="Crear">
             </form>
-
-            <label><%= consola %> </label>
-
         </div>
     </body>
 </html>

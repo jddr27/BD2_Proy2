@@ -2,7 +2,7 @@
 const express = require('express');
 const fs = require('fs');
 const cassandra = require('cassandra-driver'); 
-const client = new cassandra.Client({contactPoints:['bd2_DC1N1_1:9042','bd2_DC1N2_1:9043','bd2_DC1N3_1:9044'], keyspace:'proyecto'});
+/*const client = new cassandra.Client({contactPoints:['bd2_DC1N1_1:9042','bd2_DC1N2_1:9043','bd2_DC1N3_1:9044'], keyspace:'proyecto'});
 client.connect((err, result) => {
     if(err){
         console.log(err);
@@ -10,7 +10,7 @@ client.connect((err, result) => {
         console.log('index: cassandra connected');
     }
     
-});
+});*/
 
 const app = express();
 const bodyParser = require('body-parser');
@@ -48,7 +48,19 @@ app.get('/nPate',function(req, res){
 });
 
 app.get('/nCola',function(req, res){
-    res.render('nCola',{consola:salida, valores:arreglo});
+    let areas = []
+    let query = "SELECT * FROM area;";
+    client.execute(query,[], (err, result) => {
+        if(err){
+            salida = err;
+            console.log("ERROR" + err);
+            return res.send(err.toString());
+        } else {
+            areas = result.rows;
+            //console.log(result.rows);
+            return res.render('nCola',{valores:areas});
+        }
+    });
 });
 
 app.get('/lInve',function(req, res){
@@ -68,7 +80,7 @@ app.get('/cargarPais',function(req, res){
     let exjson = JSON.parse(rawdata);
     let query = "";
     exjson.forEach(function(element) {
-        query = "INSERT INTO pais (nombrePais, a2c, a3c, borders)" +  
+        query = "INSERT INTO pais (nombrePais, a2c, a3c, borders) " +  
                         "VALUES ('"+ element.name +"', '"+ element.alpha2Code +"', '"+
                         element.alpha3Code+ "', {'" + element.borders.join("','").toString() + "'});";
         //console.log(query);
@@ -99,7 +111,7 @@ app.post('/nuevoPais', (req, res) => {
     console.log('entro a crear un pais');
     //console.log(req.body);
     let query = "";
-    query = "INSERT INTO pais (nombrePais, a2c, a3c, borders)" +  
+    query = "INSERT INTO pais (nombrePais, a2c, a3c, borders) " +  
                 "VALUES ('"+ req.body.name +"', '"+ req.body.a2c +"', '"+
                 req.body.a3c+ "', {'" + req.body.borders.join("','").toString() + "'});";
     console.log(query);
@@ -131,12 +143,17 @@ app.get('/cargarCola',function(req, res){
     let exjson = JSON.parse(rawdata);
     let query = "";
     let anio = 2020;
+    let areas = "";
     exjson.patents.forEach(function(personas) {
+        personas.IPCs.forEach(function(area) {
+            areas += area.ipc_section.toString() + "', '";
+        });
+        areas = areas.substring(0,areas.length-3);
         personas.examiners.forEach(function(element) {
             anio = Math.floor(Math.random() * (2019 - 2010)) + 2010;
-            query = "INSERT INTO profesional (idProfesional, nombreProfesional, apellidoProfesional, fechaInicio)" +  
+            query = "INSERT INTO profesional (idProfesional, nombreProfesional, apellidoProfesional, fechaInicio, areas) " +  
                             "VALUES ('"+ element.examiner_id +"', '"+ element.examiner_first_name +"', '"+
-                            element.examiner_last_name+ "', '" + anio + "-01-01');";
+                            element.examiner_last_name+ "', '" + anio + "-01-01', {'"+ areas +"});";
             //console.log(query);
             client.execute(query,[], (err, result) => {
                 if(err){
@@ -144,40 +161,36 @@ app.get('/cargarCola',function(req, res){
                 }
             });
         });
+        areas = "";
     });
     res.redirect('/');
 });
 
 app.post('/nuevoCola', (req, res) => {
-    console.log('entro a crear un pais');
-    //console.log(req.body);
+    console.log('entro a crear un colaborador');
     let query = "";
-    query = "INSERT INTO pais (nombrePais, a2c, a3c, borders)" +  
-                "VALUES ('"+ req.body.name +"', '"+ req.body.a2c +"', '"+
-                req.body.a3c+ "', {'" + req.body.borders.join("','").toString() + "'});";
-    console.log(query);
+    let id = makeid(25);
+    query = "INSERT INTO profesional (idProfesional, nombreProfesional, apellidoProfesional, fechaInicio) " +  
+                "VALUES ('"+ id +"', '"+ req.body.name +"', '"+ req.body.ape+ "', '" + req.body.fecha + "');";
+    //console.log(query);
     client.execute(query,[], (err, result) => {
         if(err){
             console.log("ERROR" + err);
         }
     });
-    query = "INSERT INTO pais_por_a2c (nombrePais, a2c)" +  
-                    "VALUES ('"+ req.body.name +"', '"+ req.body.a2c +"');";
-    client.execute(query,[], (err, result) => {
-        if(err){
-            console.log("ERROR" + err);
-        }
-    });
-    query = "INSERT INTO pais_por_a3c (nombrePais, a3c)" +  
-                    "VALUES ('"+ req.body.name +"', '"+ req.body.a3c +"');";
-    client.execute(query,[], (err, result) => {
-        if(err){
-            console.log("ERROR" + err);
-        }
-    });
-    console.log('termino de crear el pais');
-    res.redirect('/nPais');
+    console.log('termino de crear el colaborador');
+    res.redirect('/nCola');
 });
+
+function makeid(length) {
+    var result           = '';
+    var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    var charactersLength = characters.length;
+    for ( var i = 0; i < length; i++ ) {
+       result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+    return result;
+}
 
 app.listen(3001, function () {
     console.log('Example app listening on port 3001!');
