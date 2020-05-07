@@ -1,6 +1,6 @@
 <html lang="es">
     <head>
-            <title>Detalle</title>
+            <title>Detalle <%= res.idinvento %></title>
             <meta charset="utf-8">
             <meta name="viewport" content="width=device-width, initial-scale=1">
             <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -64,11 +64,75 @@
             </div>
         </nav>
 
-        <h1> Proyecto 2 </h1> 
-        <br> 
-        <h3> José Daniel De León Ruiz </h3> 
-        <h3> 201503393</h3> 
-        <br> 
+        <h3> Informacion general </h3> 
+        <br>
+        <table style="width: fit-content;">
+            <tr>
+                <th>ID</th>
+                <td><%= res.idinvento %></td>
+            </tr>
+            <tr>
+                <th>Titulo</th>
+                <td><%= res.nombreinvento %></td>
+            </tr>
+            <tr>
+                <th>Descripcion</th>
+                <td><%= res.descripcion %></td>
+            </tr>
+            <tr>
+                <th>Fecha de presentacion</th>
+                <td><%= res.fechapresentacion %></td>
+            </tr>
+            <tr>
+                <th>Pais</th>
+                <td><%= res.idpais %></td>
+            </tr>
+        </table>
+        
+        <h3> Inventor(es) </h3> 
+        <br>
+        <table style="width: fit-content;">
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+            </tr>
+            <% for(var i=0; i< res.idautor.length; i++){ %>
+            <tr>
+                <td><%= res.idautor[i] %></td>
+                <td><%= res.nombreautor[i] %></td> 
+            </tr>
+            <% } %>
+        </table>
+
+        <h3> Area(s) </h3> 
+        <br>
+        <table style="width: fit-content;">
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+            </tr>
+            <% for(var i=0; i< res.idarea.length; i++){ %>
+            <tr>
+                <td><%= res.idarea[i] %></td>
+                <td><%= res.nombrearea[i] %></td> 
+            </tr>
+            <% } %>
+        </table>
+
+        <h3> Colaborador(es) </h3> 
+        <br>
+        <table style="width: fit-content;">
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+            </tr>
+            <% for(var i=0; i< res.idprofesional.length; i++){ %>
+            <tr>
+                <td><%= res.idprofesional[i] %></td>
+                <td><%= res.nombreprofesional[i] %></td> 
+            </tr>
+            <% } %>
+        </table>
 
     </body>
 </html>

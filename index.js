@@ -545,7 +545,7 @@ app.post('/filtrarArea', (req, res) => {
     let areas = [];
     listaArea = [];
     if (typeof req.body.areas != "string") {
-        req.body.inves.forEach(function(area) {
+        req.body.areas.forEach(function(area) {
             areas.push(area);
         });
     }
@@ -570,7 +570,7 @@ app.post('/filtrarPais', (req, res) => {
     let paises = [];
     listaPais = [];
     if (typeof req.body.paises != "string") {
-        req.body.inves.forEach(function(pais) {
+        req.body.paises.forEach(function(pais) {
             paises.push(pais);
         });
     }
@@ -578,7 +578,7 @@ app.post('/filtrarPais', (req, res) => {
         paises.push(req.body.paises);
     }
     let query = "SELECT * FROM inventos_por_pais WHERE idPais IN ('"+ paises.join("', '").toString() +"');";
-    //console.log(query);
+    console.log(query);
     client.execute(query,[], (err, result) => {
         if(err){
             console.log("ERROR" + err);
