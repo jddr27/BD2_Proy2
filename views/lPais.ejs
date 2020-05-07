@@ -8,6 +8,11 @@
             <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
             <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
             <script src="/static/prueba_js.js"></script>
+
+            <!-- Chosen -->
+            <link href='/static/chosen-js/chosen.min.css' rel='stylesheet' type='text/css'>
+            <script src='/static/chosen-js/chosen.jquery.min.js' type='text/javascript'></script>
+
             <style>    
               /* Set black background color, white text and some padding */
               nav {
@@ -68,7 +73,12 @@
             <form action="/filtrarPais" method="POST" enctype="application/json">
                 <div>
                     <label>Pais</label>
-                    <input type="text" id="pais" name="pais">
+                    <!-- multiple dropdown -->
+                    <select id="paises" name="paises" class="chosen" multiple="true" style="width:300px;">
+                        <% for(var i=0; i< paises.length; i++){ %>
+                            <option value="<%= paises[i].a2c %>"><%= paises[i].nombrepais %></option>
+                        <% } %>
+                    </select>
                 </div>
                 <input type="submit" id="btnFiltrar" value="Filtrar">
             </form>
@@ -76,23 +86,27 @@
             <% if(valores.length > 0){ %>
                 <table style="width: fit-content;">
                     <tr>
-                    <th>ID</th>
-                    <th>Titulo</th> 
-                    <th>Descripcion</th>
-                    <th>email</th> 
-                    <th>Fecha</th> 
+                        <th>ID</th>
+                        <th>Titulo</th>
+                        <th>Pais</th> 
                     </tr>
                     <% for(var i=0; i< valores.length; i++){ %>
                     <tr>
-                    <td><%= valores[i].idticket %></td>
-                    <td><%= valores[i].titulo %></td> 
-                    <td><%= valores[i].descripcion %></td> 
-                    <td><%= valores[i].email %></td> 
-                    <td><%= valores[i].fecha %></td> 
+                        <form action="/filtrarDetalle" method="POST" enctype="application/json">
+                            <td><input type="submit" name="btnDetalle" value="<%= valores[i].idinvento %>" class="btn btn-default"></td>
+                        </form>
+                        <td><%= valores[i].nombreinvento %></td>
+                        <td><%= valores[i].nombrepais %></td> 
                     </tr>
                     <% } %>
                 </table>
             <% } %>
         </div>
+
+        <script>
+            jQuery(document).ready(function(){
+                jQuery(".chosen").data("placeholder","Seleccionar areas...").chosen();
+            });
+        </script>
     </body>
 </html>

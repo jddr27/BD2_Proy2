@@ -126,11 +126,33 @@ app.get('/nCola',function(req, res){
 });
 
 app.get('/lInve',function(req, res){
-    res.render('lInve',{consola:salida, valores:arreglo});
+    let inves = []
+    let query = "SELECT idAutor, nombreAutor, apellidoAutor FROM autor;";
+    client.execute(query,[], (err, result) => {
+        if(err){
+            console.log("ERROR" + err);
+            return res.send(err.toString());
+        } else {
+            result.rows.forEach(function(inv) {
+                inves.push({"idautor":inv.idautor, "nombreautor":inv.nombreautor +" "+inv.apellidoautor});
+            });
+            return res.render('lInve',{valores:listaAutor, inves:inves});
+        }
+    });
 });
 
 app.get('/lPais',function(req, res){
-    res.render('lPais',{consola:salida, valores:arreglo});
+    let paises = []
+    let query = "SELECT * FROM pais_por_a2c;";
+    client.execute(query,[], (err, result) => {
+        if(err){
+            console.log("ERROR" + err);
+            return res.send(err.toString());
+        } else {
+            paises = result.rows;
+            return res.render('lPais',{valores:listaPais, paises:paises});
+        }
+    });
 });
 
 app.get('/lArea',function(req, res){
@@ -520,17 +542,18 @@ app.post('/nuevaPate2', (req, res) => {
 
 app.post('/filtrarArea', (req, res) => {
     console.log('entro a filtrar por area');
-    let areas = []
+    let areas = [];
+    listaArea = [];
     if (typeof req.body.areas != "string") {
-        req.body.inves.forEach(function(inv) {
-            areas.push(inv);
+        req.body.inves.forEach(function(area) {
+            areas.push(area);
         });
     }
     else{
         areas.push(req.body.areas);
     }
     let query = "SELECT * FROM inventos_por_area WHERE idArea IN ('"+ areas.join("', '").toString() +"');";
-    console.log(query);
+    //console.log(query);
     client.execute(query,[], (err, result) => {
         if(err){
             console.log("ERROR" + err);
@@ -542,10 +565,60 @@ app.post('/filtrarArea', (req, res) => {
     });
 });
 
+app.post('/filtrarPais', (req, res) => {
+    console.log('entro a filtrar por pais');
+    let paises = [];
+    listaPais = [];
+    if (typeof req.body.paises != "string") {
+        req.body.inves.forEach(function(pais) {
+            paises.push(pais);
+        });
+    }
+    else{
+        paises.push(req.body.paises);
+    }
+    let query = "SELECT * FROM inventos_por_pais WHERE idPais IN ('"+ paises.join("', '").toString() +"');";
+    //console.log(query);
+    client.execute(query,[], (err, result) => {
+        if(err){
+            console.log("ERROR" + err);
+            return res.send(err.toString());
+        } else {
+            listaPais = result.rows;
+            return res.redirect('/lPais');
+        }
+    });
+});
+
+app.post('/filtrarInve', (req, res) => {
+    console.log('entro a filtrar por inventor');
+    let inves = [];
+    listaAutor = [];
+    if (typeof req.body.inves != "string") {
+        req.body.inves.forEach(function(inv) {
+            inves.push(inv);
+        });
+    }
+    else{
+        inves.push(req.body.inves);
+    }
+    let query = "SELECT * FROM inventos_por_autor WHERE idAutor IN ('"+ inves.join("', '").toString() +"');";
+    //console.log(query);
+    client.execute(query,[], (err, result) => {
+        if(err){
+            console.log("ERROR" + err);
+            return res.send(err.toString());
+        } else {
+            listaAutor = result.rows;
+            return res.redirect('/lInve');
+        }
+    });
+});
+
 app.post('/filtrarDetalle', (req, res) => {
     console.log('entro a detalle');
     resultado = null;
-    let query = "SELECT * FROM invento WHERE idInvento='"+ req.body.btnDetalle +"';";
+    let query = "SELECT * FROM invento WHERE idInvento="+ req.body.btnDetalle +";";
     //console.log(query);
     client.execute(query,[], (err, result) => {
         if(err){
