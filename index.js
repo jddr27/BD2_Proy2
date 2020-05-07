@@ -142,7 +142,6 @@ app.get('/lArea',function(req, res){
             return res.send(err.toString());
         } else {
             areas = result.rows;
-            console.log("LISTA:" + listaArea);
             return res.render('lArea',{valores:listaArea, areas:areas});
         }
     });
@@ -521,7 +520,6 @@ app.post('/nuevaPate2', (req, res) => {
 
 app.post('/filtrarArea', (req, res) => {
     console.log('entro a filtrar por area');
-    let listaArea = []
     let areas = []
     if (typeof req.body.areas != "string") {
         req.body.inves.forEach(function(inv) {
@@ -538,9 +536,7 @@ app.post('/filtrarArea', (req, res) => {
             console.log("ERROR" + err);
             return res.send(err.toString());
         } else {
-            console.log(result.rows);
             listaArea = result.rows;
-            //console.log("LISTA:" + listaArea);
             return res.redirect('/lArea');
         }
     });
