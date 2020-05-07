@@ -49,7 +49,7 @@ app.get('/nPate',function(req, res){
 
 app.get('/nCola',function(req, res){
     let areas = []
-    let query = "SELECT * FROM area;";
+    let query = "SELECT idArea, nombreArea FROM area;";
     client.execute(query,[], (err, result) => {
         if(err){
             salida = err;
@@ -170,8 +170,9 @@ app.post('/nuevoCola', (req, res) => {
     console.log('entro a crear un colaborador');
     let query = "";
     let id = makeid(25);
-    query = "INSERT INTO profesional (idProfesional, nombreProfesional, apellidoProfesional, fechaInicio) " +  
-                "VALUES ('"+ id +"', '"+ req.body.name +"', '"+ req.body.ape+ "', '" + req.body.fecha + "');";
+    query = "INSERT INTO profesional (idProfesional, nombreProfesional, apellidoProfesional, fechaInicio, areas) " +  
+                "VALUES ('"+ id +"', '"+ req.body.name +"', '"+ req.body.ape+ "', '" 
+                + req.body.fecha +"', {'" + req.body.areas.join("','").toString() + "'});";
     //console.log(query);
     client.execute(query,[], (err, result) => {
         if(err){

@@ -21,7 +21,7 @@ CREATE TABLE profesional(
     nombreProfesional   TEXT,
     apellidoProfesional TEXT,
     fechaInicio         DATE,
-    area                SET<TEXT>,
+    areas               SET<TEXT>,
     PRIMARY KEY (idProfesional, nombreProfesional, apellidoProfesional)
 )  WITH CLUSTERING ORDER BY (nombreProfesional ASC, apellidoProfesional ASC);
 

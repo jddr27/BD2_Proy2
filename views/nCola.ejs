@@ -8,6 +8,11 @@
             <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
             <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
             <script src="/static/prueba_js.js"></script>
+            
+            <!-- Chosen -->
+            <link href='/static/chosen-js/chosen.min.css' rel='stylesheet' type='text/css'>
+            <script src='/static/chosen-js/chosen.jquery.min.js' type='text/javascript'></script>
+
             <style>    
               /* Set black background color, white text and some padding */
               nav {
@@ -77,6 +82,15 @@
                 <div>
                     <label>Fecha</label>
                     <input type="date" id="fecha" name="fecha">
+                </div>
+                <div>
+                    <label>Areas</label>
+                    <!-- multiple dropdown -->
+                    <select id="areas" name="areas" class="chosen" multiple="true" style="width:300px;">
+                        <% for(var i=0; i< valores.length; i++){ %>
+                            <option value="<%= valores[i].idarea %>"><%= valores[i].nombrearea %></option>
+                        <% } %>
+                    </select>
                 </div>
                 <input type="submit" id="btnCrear" value="Crear">
             </form>
