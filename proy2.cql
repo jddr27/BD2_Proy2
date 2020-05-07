@@ -48,21 +48,21 @@ CREATE TABLE invento(
 );
 
 CREATE TABLE inventos_por_area(
-    idInvento       TEXT,
+    idInvento       INT,
     nombreInvento   TEXT,
     idArea          TEXT,
     PRIMARY KEY (idArea, idInvento)
 ) WITH CLUSTERING ORDER BY (idInvento ASC);
 
 CREATE TABLE inventos_por_pais(
-    idInvento       TEXT,
+    idInvento       INT,
     nombreInvento   TEXT,
     idPais          TEXT,
     PRIMARY KEY (idPais, idInvento)
 ) WITH CLUSTERING ORDER BY (idInvento ASC);
 
 CREATE TABLE inventos_por_autor(
-    idInvento       TEXT,
+    idInvento       INT,
     nombreInvento   TEXT,
     idAutor         TEXT,
     PRIMARY KEY (idAutor, idInvento)

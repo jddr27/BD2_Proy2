@@ -306,7 +306,7 @@ app.get('/cargarPate',function(req, res){
         tmpNom = pate.patent_title;
         tmpDes = pate.patent_type;
         tmpFec = pate.patent_date;
-        tmpPais = pate.assignees.assignee_lastknown_country;
+        tmpPais = pate.assignees[0].assignee_lastknown_country;
         tmpiAutor = [];
         tmpnAutor = [];
         tmpiArea = [];
@@ -373,7 +373,7 @@ app.get('/cargarPate',function(req, res){
             }
         });
 
-        pateiArea.forEach(function(ele) {
+        tmpiArea.forEach(function(ele) {
             query = "INSERT INTO inventos_por_area (idInvento, nombreInvento, idArea) " +  
                         "VALUES ("+ tmpId +", '"+ tmpNom +"', '"+  + "', '"+ ele +"');";
             //console.log(query);
@@ -384,7 +384,7 @@ app.get('/cargarPate',function(req, res){
             });
         });
 
-        pateiAutor.forEach(function(ele) {
+        tmpiAutor.forEach(function(ele) {
             query = "INSERT INTO inventos_por_autor (idInvento, nombreInvento, idAutor) " +  
                         "VALUES ("+ tmpId +", '"+ tmpNom +"', '"+  + "', '"+ ele +"');";
             //console.log(query);
