@@ -80,13 +80,13 @@
                     <!-- multiple dropdown -->
                     <select id="inves" name="inves" class="chosen" multiple="true" style="width:300px;">
                         <% for(var i=0; i< inves.length; i++){ %>
-                            <option value="<%= inves[i].idautor %>,<%= inves[i].nombreautor %>"><%= inves[i].nombreautor %></option>
+                            <option value="<%= inves[i].idautor %>*<%= inves[i].nombreautor %>"><%= inves[i].nombreautor %></option>
                         <% } %>
                     </select>
                 </div>
                 <div>
                     <label>Descripcion</label>
-                    <textarea id="nDescri" name="nDescri" rows="5" cols="50"> </textarea>
+                    <textarea id="descri" name="descri" rows="5" cols="50"> </textarea>
                 </div>
                 <div>
                     <label>Fecha</label>
@@ -97,7 +97,7 @@
                     <!-- multiple dropdown -->
                     <select id="pais" name="pais" class="chosen" style="width:300px;">
                         <% for(var i=0; i< paises.length; i++){ %>
-                            <option value="<%= paises[i].idpais %>,<%= paises[i].nombrepais %>"><%= paises[i].nombrepais %></option>
+                            <option value="<%= paises[i].a2c %>*<%= paises[i].nombrepais %>"><%= paises[i].nombrepais %></option>
                         <% } %>
                     </select>
                 </div>
@@ -106,7 +106,7 @@
                     <!-- multiple dropdown -->
                     <select id="areas" name="areas" class="chosen" multiple="true" style="width:300px;">
                         <% for(var i=0; i< areas.length; i++){ %>
-                            <option value="<%= areas[i].idarea %>,<%= areas[i].nombrearea %>"><%= areas[i].nombrearea %></option>
+                            <option value="<%= areas[i].idarea %>*<%= areas[i].nombrearea %>"><%= areas[i].nombrearea %></option>
                         <% } %>
                     </select>
                 </div>

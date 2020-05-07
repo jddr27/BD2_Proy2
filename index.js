@@ -23,9 +23,12 @@ app.use('/static', express.static(__dirname + '/public'));
 var listaArea = [];
 var listaAutor = [];
 var listaPais = [];
-var pateArea = [];
-var pateAutor = [];
-var pais = "";
+var patenArea = [];
+var patenAutor = [];
+var pateiArea = [];
+var pateiAutor = [];
+var iPais = "";
+var nPais = "";
 var titulo = "";
 var descri = "";
 var fecha = "";
@@ -290,9 +293,28 @@ app.get('/cargarAutor',function(req, res){
 
 app.post('/nuevaPate', (req, res) => {
     console.log('entro a crear una patente');
+    pateiArea = [];
+    pateiAutor = [];
+    patenArea = [];
+    patenAutor = [];
     console.log(req.body);
-    console.log('termino de crear la patente');
-    res.redirect('/nCola');
+    req.body.inves.forEach(function(inv) {
+        let tmpInv = inv.split("*");
+        pateiAutor.push(tmpInv[0]);
+        patenAutor.push(tmpInv[1]);
+    });
+    req.body.areas.forEach(function(area) {
+        let tmpArea = area.split("*");
+        pateiArea.push(tmpArea[0]);
+        patenArea.push(tmpArea[1]);
+    });
+    let tmpPais = req.body.pais.split("*");
+    iPais = tmpPais[0];
+    nPais = tmpPais[1];
+    titulo = req.body.name;
+    descri = req.body.descri;
+    fecha = req.body.fecha;
+    res.redirect('/nPate2');
 });
 
 function makeid(length) {
