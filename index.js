@@ -72,7 +72,7 @@ app.get('/nPate',function(req, res){
             return res.send(err.toString());
         } else {
             result.rows.forEach(function(inv) {
-                inves.append({"idautor":inv.idautor, "nombreautor":inv.nombreautor +" "+inv.apellidoautor});
+                inves.push({"idautor":inv.idautor, "nombreautor":inv.nombreautor +" "+inv.apellidoautor});
             });
         }
     });
@@ -281,6 +281,13 @@ app.get('/cargarAutor',function(req, res){
         });
     });
     res.redirect('/');
+});
+
+app.post('/nuevaPate', (req, res) => {
+    console.log('entro a crear una patente');
+    console.log(req.body);
+    console.log('termino de crear la patente');
+    res.redirect('/nCola');
 });
 
 function makeid(length) {
