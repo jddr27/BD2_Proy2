@@ -286,6 +286,39 @@ app.get('/cargarAutor',function(req, res){
     res.redirect('/');
 });
 
+app.get('/cargarPate',function(req, res){
+    let rawdata = fs.readFileSync('./data/patents.json');
+    let exjson = JSON.parse(rawdata);
+    let query = "";
+    let tmpId = "";
+    let tmpNom = "";
+    let tmpDes = "";
+    let tmpFec = "";
+    let tmpi //quitar el nombre del pais
+    exjson.patents.forEach(function(pate) {
+        tmpId = pate.patent_number;
+        tmpNom = pate.patent_title;
+        tmpDes = pate.patent_type;
+        tmpFec = pate.patent_date;
+        pate.inventors.forEach(function(element) {
+        });
+
+        query = "INSERT INTO invento (idInvento, nombreInvento, idAutor, nombreAutor, descripcion,"+
+                " fechaPresentacion, idPais, nombrePais, idArea, nombreArea, idProfesional, nombreProfesional) " +  
+                    "VALUES ("+ tmpId +", '"+ tmpNom +"', '"+  + "', {'"+ pateiAutor.join("','").toString() +"'}, {'" 
+                    + patenAutor.join("','").toString() +"'}, '"+ tmpDes +"', '"+ tmpFec +"', '"+ iPais +"', '" 
+                    + nPais +"', {'"+ pateiArea.join("','").toString() +"'}, {'"+ patenArea.join("','").toString() 
+                    +"'}, {'"+ pateiCol.join("','").toString() +"'}, {'"+ patenCol.join("','").toString() +"'});";
+        console.log(query);
+        client.execute(query,[], (err, result) => {
+            if(err){
+                console.log("ERROR" + err);
+            }
+        });
+    });
+    res.redirect('/');
+});
+
 app.post('/nuevaPate', (req, res) => {
     console.log('entro a crear una patente');
     pateiArea = [];
@@ -356,6 +389,38 @@ app.post('/nuevaPate2', (req, res) => {
             console.log("ERROR" + err);
         }
     });
+
+    query = "INSERT INTO inventos_por_pais (idInvento, nombreInvento, idPais) " +  
+                    "VALUES ("+ id +", '"+ titulo +"', '"+  + "', '"+ iPais +"');";
+        console.log(query);
+        client.execute(query,[], (err, result) => {
+            if(err){
+                console.log("ERROR" + err);
+            }
+        });
+
+    pateiArea.forEach(function(ele) {
+        query = "INSERT INTO inventos_por_area (idInvento, nombreInvento, idArea) " +  
+                    "VALUES ("+ id +", '"+ titulo +"', '"+  + "', '"+ ele +"');";
+        console.log(query);
+        client.execute(query,[], (err, result) => {
+            if(err){
+                console.log("ERROR" + err);
+            }
+        });
+    });
+
+    pateiAutor.forEach(function(ele) {
+        query = "INSERT INTO inventos_por_autor (idInvento, nombreInvento, idAutor) " +  
+                    "VALUES ("+ id +", '"+ titulo +"', '"+  + "', '"+ ele +"');";
+        console.log(query);
+        client.execute(query,[], (err, result) => {
+            if(err){
+                console.log("ERROR" + err);
+            }
+        });
+    });
+    
 
     console.log('termino de crear una patente')
     res.redirect('/nPate');
