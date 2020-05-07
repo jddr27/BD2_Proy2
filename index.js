@@ -97,7 +97,7 @@ app.get('/nPate2',function(req, res){
     let colas = []
     let tmp = pateiArea.join("' OR idarea = '").toString();
     let query = "SELECT * FROM profesional_por_area WHERE idArea='"+ tmp +"';";
-    //console.log(query);
+    console.log(query);
     client.execute(query,[], (err, result) => {
         if(err){
             console.log("ERROR" + err);
