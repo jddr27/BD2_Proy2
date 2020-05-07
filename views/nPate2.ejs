@@ -1,0 +1,128 @@
+<html lang="es">
+    <head>
+            <title>Nueva patente</title>
+            <meta charset="utf-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1">
+            <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+            <link rel="stylesheet" type="text/css" href="/static/tln.min.css"/>
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+            <script src="/static/prueba_js.js"></script>
+
+            <!-- Chosen -->
+            <link href='/static/chosen-js/chosen.min.css' rel='stylesheet' type='text/css'>
+            <script src='/static/chosen-js/chosen.jquery.min.js' type='text/javascript'></script>
+
+            <style>    
+              /* Set black background color, white text and some padding */
+              nav {
+                background-color: #555;
+              }
+          
+              footer {
+                background-color: #555;
+                color: white;
+                padding: 15px;
+              }
+              table {
+                border-collapse: collapse;
+                width: 100%;
+               }
+
+               th, td {
+                text-align: left;
+                padding: 8px;
+               }
+
+                tr:nth-child(even) {background-color: #f2f2f2;}
+            </style>
+    </head>
+    
+    <body>
+        <nav class="navbar navbar-inverse">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                <a class="navbar-brand" href="/">BD2</a>
+                </div>
+                <div class="collapse navbar-collapse" id="myNavbar">
+                    <ul class="nav navbar-nav">
+                        <li class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="">Ingresar
+                            <span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="/nCola">Colaboradores</a></li>
+                                <li><a href="/nPais">Paises</a></li>
+                            </ul>
+                        </li>
+                        <li class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="">Listar inventos
+                            <span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="/lPais">Por pais</a></li>
+                                <li><a href="/lInve">Por inventor</a></li>
+                                <li><a href="/lArea">Por area</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <div id="container-1" align="center">
+            <h3> Crear registro de patente </h3>
+            <form action="/nuevaPate" method="POST" enctype="application/json">
+                <div>
+                    <label>Nombre</label>
+                    <input type="text" id="name" name="name">
+                </div>
+                <div>
+                    <label>Inventores</label>
+                    <!-- multiple dropdown -->
+                    <select id="inves" name="inves" class="chosen" multiple="true" style="width:300px;">
+                        <% for(var i=0; i< inves.length; i++){ %>
+                            <option value="<%= inves[i].idautor %>,<%= inves[i].nombreautor %>"><%= inves[i].nombreautor %></option>
+                        <% } %>
+                    </select>
+                </div>
+                <div>
+                    <label>Descripcion</label>
+                    <textarea id="nDescri" name="nDescri" rows="5" cols="50"> </textarea>
+                </div>
+                <div>
+                    <label>Pais</label>
+                    <!-- multiple dropdown -->
+                    <select id="pais" name="pais" class="chosen" style="width:300px;">
+                        <% for(var i=0; i< paises.length; i++){ %>
+                            <option value="<%= paises[i].idpais %>,<%= paises[i].nombrepais %>"><%= paises[i].nombrepais %></option>
+                        <% } %>
+                    </select>
+                </div>
+                <div>
+                    <label>Areas</label>
+                    <!-- multiple dropdown -->
+                    <select id="areas" name="areas" class="chosen" multiple="true" style="width:300px;">
+                        <% for(var i=0; i< areas.length; i++){ %>
+                            <option value="<%= areas[i].idarea %>,<%= areas[i].nombrearea %>"><%= areas[i].nombrearea %></option>
+                        <% } %>
+                    </select>
+                </div>
+                <div>
+                    <label>Colaboradores</label>
+                    <!-- multiple dropdown -->
+                    <select id="colas" name="colas" class="chosen" multiple="true" style="width:300px;">
+                        <% for(var i=0; i< colas.length; i++){ %>
+                            <option value="<%= colas[i].idprofesional %>,<%= colas[i].nombreprofe %>"><%= colas[i].nombreprofe %></option>
+                        <% } %>
+                    </select>
+                </div>
+                <input type="submit" id="btnCrear" value="Continuar">
+            </form>
+        </div>
+
+        <script>
+            jQuery(document).ready(function(){
+                jQuery(".chosen").data("placeholder","Seleccionar areas...").chosen();
+            });
+        </script>
+    </body>
+</html>
