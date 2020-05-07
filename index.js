@@ -97,7 +97,7 @@ app.get('/nPate2',function(req, res){
     let colas = []
     let tmp = pateiArea.join("', '").toString();
     let query = "SELECT * FROM profesional_por_area WHERE idArea IN ('"+ tmp +"');";
-    console.log(query);
+    //console.log(query);
     client.execute(query,[], (err, result) => {
         if(err){
             console.log("ERROR" + err);
@@ -346,15 +346,15 @@ app.post('/nuevaPate2', (req, res) => {
     query = "INSERT INTO invento (idInvento, nombreInvento, idAutor, nombreAutor, descripcion,"+
             " fechaPresentacion, idPais, nombrePais, idArea, nombreArea, idProfesional, nombreProfesional) " +  
                 "VALUES ("+ id +", '"+ titulo +"', '"+  + "', {'"+ pateiAutor.join("','").toString() +"'}, {'" 
-                + patniAutor.join("','").toString() +"'}, '"+ descri +"', '"+ fecha +"', '"+ iPais +"', '" 
+                + patenAutor.join("','").toString() +"'}, '"+ descri +"', '"+ fecha +"', '"+ iPais +"', '" 
                 + nPais +"', {'"+ pateiArea.join("','").toString() +"'}, {'"+ patenArea.join("','").toString() 
                 +"'}, {'"+ pateiCol.join("','").toString() +"'}, {'"+ patenCol.join("','").toString() +"'});";
     console.log(query);
-    /*client.execute(query,[], (err, result) => {
+    client.execute(query,[], (err, result) => {
         if(err){
             console.log("ERROR" + err);
         }
-    });*/
+    });
 
     console.log('termino de crear una patente')
     res.redirect('/nPate');
