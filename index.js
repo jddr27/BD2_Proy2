@@ -209,10 +209,19 @@ app.get('/cargarPais',function(req, res){
 app.post('/nuevoPais', (req, res) => {
     console.log('entro a crear un pais');
     //console.log(req.body);
+    let tmpBorders = [];
+    if (typeof req.body.borders != "string") {
+        req.body.borders.forEach(function(inv) {
+            tmpBorders.push(inv);
+        });
+    }
+    else{
+        tmpBorders.push(req.body.borders);
+    }
     let query = "";
     query = "INSERT INTO pais (nombrePais, a2c, a3c, borders) " +  
                 "VALUES ('"+ req.body.name +"', '"+ req.body.a2c +"', '"+
-                req.body.a3c+ "', {'" + req.body.borders.join("','").toString() + "'});";
+                req.body.a3c+ "', {'" + tmpBorders.join("','").toString() + "'});";
     console.log(query);
     client.execute(query,[], (err, result) => {
         if(err){
@@ -279,17 +288,26 @@ app.get('/cargarCola',function(req, res){
 app.post('/nuevoCola', (req, res) => {
     console.log('entro a crear un colaborador');
     let query = "";
+    let tmpAreas = [];
+    if (typeof req.body.areas != "string") {
+        req.body.areas.forEach(function(inv) {
+            tmpAreas.push(inv);
+        });
+    }
+    else{
+        tmpAreas.push(req.body.areas);
+    }
     let id = makeid(25);
     query = "INSERT INTO profesional (idProfesional, nombreProfesional, apellidoProfesional, fechaInicio, areas) " +  
                 "VALUES ('"+ id +"', '"+ req.body.name +"', '"+ req.body.ape+ "', '" 
-                + req.body.fecha +"', {'" + req.body.areas.join("','").toString() + "'});";
+                + req.body.fecha +"', {'" + tmpAreas.join("','").toString() + "'});";
     //console.log(query);
     client.execute(query,[], (err, result) => {
         if(err){
             console.log("ERROR" + err);
         }
     });
-    req.body.areas.forEach(function(area) {
+    tmpAreas.forEach(function(area) {
         query = "INSERT INTO profesional_por_area (idProfesional, nombreProfesional, idArea) " +  
                     "VALUES ('"+ id +"', '"+ req.body.name +" "+ req.body.ape+ "', '"+ area +"');";
         //console.log(query);
@@ -578,7 +596,7 @@ app.post('/filtrarPais', (req, res) => {
         paises.push(req.body.paises);
     }
     let query = "SELECT * FROM inventos_por_pais WHERE idPais IN ('"+ paises.join("', '").toString() +"');";
-    console.log(query);
+    //console.log(query);
     client.execute(query,[], (err, result) => {
         if(err){
             console.log("ERROR" + err);
