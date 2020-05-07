@@ -42,7 +42,6 @@ app.get('/nPais',function(req, res){
     let query = "SELECT * FROM pais_por_a3c;";
     client.execute(query,[], (err, result) => {
         if(err){
-            salida = err;
             console.log("ERROR" + err);
             return res.send(err.toString());
         } else {
@@ -60,7 +59,6 @@ app.get('/nPate',function(req, res){
     let query = "SELECT * FROM pais_por_a2c;";
     client.execute(query,[], (err, result) => {
         if(err){
-            salida = err;
             console.log("ERROR" + err);
             return res.send(err.toString());
         } else {
@@ -69,7 +67,6 @@ app.get('/nPate',function(req, res){
             query = "SELECT idAutor, nombreAutor, apellidoAutor FROM autor;";
             client.execute(query,[], (err, result) => {
                 if(err){
-                    salida = err;
                     console.log("ERROR" + err);
                     return res.send(err.toString());
                 } else {
@@ -80,7 +77,6 @@ app.get('/nPate',function(req, res){
                     query = "SELECT idArea, nombreArea FROM area;";
                     client.execute(query,[], (err, result) => {
                         if(err){
-                            salida = err;
                             console.log("ERROR" + err);
                             return res.send(err.toString());
                         } else {
@@ -98,20 +94,21 @@ app.get('/nPate',function(req, res){
 });
 
 app.get('/nPate2',function(req, res){
-    let paises = []
-    let query = "SELECT * FROM colaboradores_por_area WHERE idArea="+ area +";";
+    let colas = []
+    let tmp = pateiArea.join("' OR idarea = '").toString();
+    let query = "SELECT * FROM colaboradores_por_area WHERE idArea='"+ tmp +"';";
+    console.log(query);
     client.execute(query,[], (err, result) => {
         if(err){
-            salida = err;
             console.log("ERROR" + err);
             return res.send(err.toString());
         } else {
-            paises = result.rows;
+            colas = result.rows;
             //console.log(result.rows);
-            return res.render('nPais',{valores:paises});
+            return res.render('nPate2',{colas:colas});
         }
     });
-    res.render('nPate2',{valores:arreglo});
+    res.render("/");
 });
 
 app.get('/nCola',function(req, res){
@@ -119,7 +116,6 @@ app.get('/nCola',function(req, res){
     let query = "SELECT idArea, nombreArea FROM area;";
     client.execute(query,[], (err, result) => {
         if(err){
-            salida = err;
             console.log("ERROR" + err);
             return res.send(err.toString());
         } else {
