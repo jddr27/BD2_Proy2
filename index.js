@@ -391,7 +391,7 @@ app.get('/cargarPate',function(req, res){
 
         for(let i=0; i<tmpiArea.length; i++){
             query = "INSERT INTO inventos_por_area (idInvento, nombreInvento, idArea, nombreArea) " +  
-                        "VALUES ("+ id +", '"+ titulo +"', '"+ tmpiArea[i] +"', '"+ tmpnArea[i] +"');";
+                        "VALUES ("+ tmpId +", '"+ tmpNom +"', '"+ tmpiArea[i] +"', '"+ tmpnArea[i] +"');";
             //console.log(query);
             client.execute(query,[], (err, result) => {
                 if(err){
@@ -402,7 +402,7 @@ app.get('/cargarPate',function(req, res){
     
         for(let i=0; i<tmpiAutor.length; i++){
             query = "INSERT INTO inventos_por_autor (idInvento, nombreInvento, idAutor, nombreAutor) " +  
-                        "VALUES ("+ id +", '"+ titulo +"', '"+ tmpiAutor[i] +"', '"+ tmpnAutor[i] +"');";
+                        "VALUES ("+ tmpId +", '"+ tmpNom +"', '"+ tmpiAutor[i] +"', '"+ tmpnAutor[i] +"');";
             //console.log(query);
             client.execute(query,[], (err, result) => {
                 if(err){
