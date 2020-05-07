@@ -40,7 +40,6 @@ CREATE TABLE invento(
     descripcion         TEXT,
     fechaPresentacion   DATE,
     idPais              TEXT,
-    nombrePais          TEXT,
     idArea              SET<TEXT>,
     nombreArea          SET<TEXT>,
     idProfesional       SET<TEXT>,

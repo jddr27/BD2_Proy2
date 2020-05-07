@@ -28,7 +28,6 @@ var patenAutor = [];
 var pateiArea = [];
 var pateiAutor = [];
 var iPais = "";
-var nPais = "";
 var titulo = "";
 var descri = "";
 var fecha = "";
@@ -294,26 +293,106 @@ app.get('/cargarPate',function(req, res){
     let tmpNom = "";
     let tmpDes = "";
     let tmpFec = "";
-    let tmpi //quitar el nombre del pais
+    let tmpPais = "";
+    let tmpiAutor = [];
+    let tmpnAutor = [];
+    let tmpiArea = [];
+    let tmpnArea = [];
+    let tmpiCol = [];
+    let tmpnCol = [];
+
     exjson.patents.forEach(function(pate) {
         tmpId = pate.patent_number;
         tmpNom = pate.patent_title;
         tmpDes = pate.patent_type;
         tmpFec = pate.patent_date;
-        pate.inventors.forEach(function(element) {
+        tmpPais = pate.assignees.assignee_lastknown_country;
+        tmpiAutor = [];
+        tmpnAutor = [];
+        tmpiArea = [];
+        tmpnArea = [];
+        tmpiCol = [];
+        tmpnCol = [];
+
+        pate.inventors.forEach(function(ele) {
+            tmpiAutor.push(ele.inventor_id);
+            tmpnAutor.push(ele.inventor_first_name + " " + ele.inventor_last_name);
+        });
+
+        pate.IPCs.forEach(function(ele) {
+            tmpiArea.push(ele.ipc_section);
+            switch(ele.ipc_section){
+                case "A":
+                    tmpnArea.push("Human Necessitites");
+                    break;
+                case "B":
+                    tmpnArea.push("Performing Operations; Transporint");
+                    break;
+                case "C":
+                    tmpnArea.push("Chemistry; Metallurgy");
+                    break;
+                case "D":
+                    tmpnArea.push("Textiles; paper");
+                    break;
+                case "E":
+                    tmpnArea.push("Fixed Constructing");
+                    break;
+                case "F":
+                    tmpnArea.push("Mechanical Engineering; Lighting; Heating; Weapons; Blasting Engines; Pumps");
+                    break;
+                case "G":
+                    tmpnArea.push("Physics, H = Electricity");
+                    break;
+            }
+        });
+
+        pate.examiners.forEach(function(ele) {
+            tmpiCol.push(ele.examiner_id);
+            tmpnCol.push(ele.examiner_first_name + " " + ele.examiner_last_name);
         });
 
         query = "INSERT INTO invento (idInvento, nombreInvento, idAutor, nombreAutor, descripcion,"+
-                " fechaPresentacion, idPais, nombrePais, idArea, nombreArea, idProfesional, nombreProfesional) " +  
-                    "VALUES ("+ tmpId +", '"+ tmpNom +"', '"+  + "', {'"+ pateiAutor.join("','").toString() +"'}, {'" 
-                    + patenAutor.join("','").toString() +"'}, '"+ tmpDes +"', '"+ tmpFec +"', '"+ iPais +"', '" 
-                    + nPais +"', {'"+ pateiArea.join("','").toString() +"'}, {'"+ patenArea.join("','").toString() 
-                    +"'}, {'"+ pateiCol.join("','").toString() +"'}, {'"+ patenCol.join("','").toString() +"'});";
+                    " fechaPresentacion, idPais, idArea, nombreArea, idProfesional, nombreProfesional) " +  
+                        "VALUES ("+ tmpId +", '"+ tmpNom +"', '"+  + "', {'"+ tmpiAutor.join("','").toString() +"'}, {'" 
+                        + tmpnAutor.join("','").toString() +"'}, '"+ tmpDes +"', '"+ tmpFec +"', '"+ tmpPais +"', {'"+ 
+                        tmpiArea.join("','").toString() +"'}, {'"+ tmpnArea.join("','").toString()+"'}, {'"+ 
+                        tmpiCol.join("','").toString() +"'}, {'"+ tmpnCol.join("','").toString() +"'});";
         console.log(query);
         client.execute(query,[], (err, result) => {
             if(err){
                 console.log("ERROR" + err);
             }
+        });
+
+        query = "INSERT INTO inventos_por_pais (idInvento, nombreInvento, idPais) " +  
+                    "VALUES ("+ tmpId +", '"+ tmpNom +"', '"+  + "', '"+ tmpPais +"');";
+        console.log(query);
+        client.execute(query,[], (err, result) => {
+            if(err){
+                console.log("ERROR" + err);
+            }
+        });
+
+        pateiArea.forEach(function(ele) {
+            query = "INSERT INTO inventos_por_area (idInvento, nombreInvento, idArea) " +  
+                        "VALUES ("+ tmpId +", '"+ tmpNom +"', '"+  + "', '"+ ele +"');";
+            console.log(query);
+            client.execute(query,[], (err, result) => {
+                if(err){
+                    console.log("ERROR" + err);
+                }
+            });
+        });
+
+        pateiAutor.forEach(function(ele) {
+            query = "INSERT INTO inventos_por_autor (idInvento, nombreInvento, idAutor) " +  
+                        "VALUES ("+ tmpId +", '"+ tmpNom +"', '"+  + "', '"+ ele +"');";
+            console.log(query);
+            client.execute(query,[], (err, result) => {
+                if(err){
+                    console.log("ERROR" + err);
+                }
+            });
         });
     });
     res.redirect('/');
@@ -350,9 +429,7 @@ app.post('/nuevaPate', (req, res) => {
         pateiArea.push(tmpArea[0]);
         patenArea.push(tmpArea[1]);
     }
-    let tmpPais = req.body.pais.split("*");
-    iPais = tmpPais[0];
-    nPais = tmpPais[1];
+    iPais = req.body.pais;
     titulo = req.body.name;
     descri = req.body.descri;
     fecha = req.body.fecha;
@@ -378,10 +455,10 @@ app.post('/nuevaPate2', (req, res) => {
         patenCol.push(tmpCol[1]);
     }
     query = "INSERT INTO invento (idInvento, nombreInvento, idAutor, nombreAutor, descripcion,"+
-            " fechaPresentacion, idPais, nombrePais, idArea, nombreArea, idProfesional, nombreProfesional) " +  
+            " fechaPresentacion, idPais, idArea, nombreArea, idProfesional, nombreProfesional) " +  
                 "VALUES ("+ id +", '"+ titulo +"', '"+  + "', {'"+ pateiAutor.join("','").toString() +"'}, {'" 
-                + patenAutor.join("','").toString() +"'}, '"+ descri +"', '"+ fecha +"', '"+ iPais +"', '" 
-                + nPais +"', {'"+ pateiArea.join("','").toString() +"'}, {'"+ patenArea.join("','").toString() 
+                + patenAutor.join("','").toString() +"'}, '"+ descri +"', '"+ fecha +"', '"+ iPais +"', {'"+ 
+                pateiArea.join("','").toString() +"'}, {'"+ patenArea.join("','").toString() 
                 +"'}, {'"+ pateiCol.join("','").toString() +"'}, {'"+ patenCol.join("','").toString() +"'});";
     console.log(query);
     client.execute(query,[], (err, result) => {
@@ -392,12 +469,12 @@ app.post('/nuevaPate2', (req, res) => {
 
     query = "INSERT INTO inventos_por_pais (idInvento, nombreInvento, idPais) " +  
                     "VALUES ("+ id +", '"+ titulo +"', '"+  + "', '"+ iPais +"');";
-        console.log(query);
-        client.execute(query,[], (err, result) => {
-            if(err){
-                console.log("ERROR" + err);
-            }
-        });
+    console.log(query);
+    client.execute(query,[], (err, result) => {
+        if(err){
+            console.log("ERROR" + err);
+        }
+    });
 
     pateiArea.forEach(function(ele) {
         query = "INSERT INTO inventos_por_area (idInvento, nombreInvento, idArea) " +  
