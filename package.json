@@ -26,7 +26,7 @@
     "hashmap": "^2.3.0",
     "os-utils": "0.0.14",
     "request": "^2.47.0",
-    "socket.io": "^1.0.6",
+    "socket.io": "^4.5.3",
     "underscore": "^1.9.1"
   }
 }
