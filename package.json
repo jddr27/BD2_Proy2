@@ -22,7 +22,7 @@
     "chosen-js": "^1.8.7",
     "cluster": "^0.7.7",
     "ejs": "^3.1.2",
-    "express": "^4.16.4",
+    "express": "^4.17.3",
     "hashmap": "^2.3.0",
     "os-utils": "0.0.14",
     "request": "^2.47.0",
